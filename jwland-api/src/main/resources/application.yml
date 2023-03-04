@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.78.129/postgres
+    username: postgres
+    password: "0000"
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    #      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        #        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100 # in query ??
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
