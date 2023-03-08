@@ -1,4 +1,4 @@
-package com.jwland.jwlandapi.domain;
+package com.jwland.jwland.domain;
 
 public enum RoleType {
     USER, ADMIN

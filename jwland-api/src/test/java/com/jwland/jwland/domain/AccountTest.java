@@ -1,4 +1,4 @@
-package com.jwland.jwlandapi.domain;
+package com.jwland.jwland.domain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

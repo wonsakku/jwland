@@ -1,4 +1,4 @@
-package com.jwland.jwlandapi.domain;
+package com.jwland.jwland.domain;
 
 import lombok.AccessLevel;
 import lombok.Getter;

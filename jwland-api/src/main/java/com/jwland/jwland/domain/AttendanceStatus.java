@@ -1,4 +1,4 @@
-package com.jwland.jwlandapi.domain;
+package com.jwland.jwland.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

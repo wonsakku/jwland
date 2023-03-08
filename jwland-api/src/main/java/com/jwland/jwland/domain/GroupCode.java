@@ -1,9 +1,8 @@
-package com.jwland.jwlandapi.domain;
+package com.jwland.jwland.domain;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 
