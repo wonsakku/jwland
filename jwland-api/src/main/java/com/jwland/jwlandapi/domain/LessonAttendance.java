@@ -1,8 +1,14 @@
 package com.jwland.jwlandapi.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(schema = Constant.SCHEMA_JWLAND,
         uniqueConstraints = @UniqueConstraint(
         name = "lesson_attendance_unique",

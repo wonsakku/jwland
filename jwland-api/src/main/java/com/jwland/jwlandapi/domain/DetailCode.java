@@ -1,12 +1,18 @@
 package com.jwland.jwlandapi.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
-@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(schema = Constant.SCHEMA_JWLAND,
         uniqueConstraints = @UniqueConstraint(name = "detail_code_unique",
         columnNames = {"group_code", "code"})
 )
+@Entity
 public class DetailCode extends BaseEntity{
 
     @Id @GeneratedValue

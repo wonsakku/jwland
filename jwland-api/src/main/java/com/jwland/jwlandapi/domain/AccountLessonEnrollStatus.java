@@ -1,9 +1,15 @@
 package com.jwland.jwlandapi.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
-@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(schema = Constant.SCHEMA_JWLAND)
+@Entity
 public class AccountLessonEnrollStatus extends BaseEntity{
 
     @Id @GeneratedValue

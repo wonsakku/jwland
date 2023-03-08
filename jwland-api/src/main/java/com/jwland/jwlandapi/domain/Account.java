@@ -1,12 +1,15 @@
 package com.jwland.jwlandapi.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(schema = Constant.SCHEMA_JWLAND)
+@Entity
 public class Account extends BaseEntity{
 
     @Id @GeneratedValue
@@ -28,6 +31,14 @@ public class Account extends BaseEntity{
     @Column(nullable = false)
     private String schoolCode;
 
-//    private Set<RoleType> roles = new HashSet<>();
+    public Account(String loginId, String name, String password, String gradeCode, String schoolCode) {
+        this.loginId = loginId;
+        this.name = name;
+        this.password = password;
+        this.gradeCode = gradeCode;
+        this.schoolCode = schoolCode;
+    }
+
+    //    private Set<RoleType> roles = new HashSet<>();
 }
 
