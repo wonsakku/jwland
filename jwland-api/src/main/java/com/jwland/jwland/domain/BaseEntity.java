@@ -19,12 +19,12 @@ public class BaseEntity {
 
     @Column(name = "insert_account_id", updatable = false)
     @CreatedBy
-    private Long createdBy;
+    protected Long createdBy;
     @CreatedDate
     private LocalDateTime createdDateTime;
     @Column(name = "update_account_id")
     @LastModifiedBy
-    private String modifiedBy;
+    protected Long modifiedBy;
 
     @LastModifiedDate
     private LocalDateTime modifiedDateTime;

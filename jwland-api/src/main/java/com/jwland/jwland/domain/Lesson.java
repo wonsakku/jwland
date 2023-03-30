@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Lesson extends BaseEntity {
 
     @Id @GeneratedValue
-    @Column(name = "classes_id")
+    @Column(name = "lesson_id")
     private Long id;
 
     @Column(nullable = false)

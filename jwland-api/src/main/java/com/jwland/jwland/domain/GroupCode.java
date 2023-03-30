@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,4 +20,9 @@ public class GroupCode extends BaseEntity {
     private String name;
     private String description;
 
+    public GroupCode(String code, String name, String description) {
+        this.code = Objects.requireNonNull(code);
+        this.name = Objects.requireNonNull(name);
+        this.description = description;
+    }
 }

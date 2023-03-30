@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(schema = Constant.SCHEMA_JWLAND)
 @Entity
-public class Account extends BaseEntity{
+public class Account extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "account_id")

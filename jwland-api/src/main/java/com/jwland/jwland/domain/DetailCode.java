@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,4 +28,13 @@ public class DetailCode extends BaseEntity{
     private String code;
 
     private String name;
+
+    public DetailCode(GroupCode groupCode, String code, String name) {
+        this.groupCode = Objects.requireNonNull(groupCode);
+        this.code = Objects.requireNonNull(code);
+        this.name = Objects.requireNonNull(name);
+    }
 }
+
+
+

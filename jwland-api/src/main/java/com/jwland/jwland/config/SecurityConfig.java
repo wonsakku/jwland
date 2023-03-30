@@ -2,6 +2,7 @@ package com.jwland.jwland.config;
 
 import com.jwland.jwland.jwt.JwtAccessDeniedHandler;
 import com.jwland.jwland.jwt.JwtAuthenticationEntryPoint;
+import com.jwland.jwland.jwt.JwtSecurityConfig;
 import com.jwland.jwland.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,9 +33,14 @@ public class SecurityConfig {
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
             .and()
+                .headers()
+                    .frameOptions()
+                    .sameOrigin()
+            .and()
                 .authorizeRequests((auth) ->
-                        auth.anyRequest().permitAll()
-                );
+                        auth.anyRequest().permitAll())
+            .apply(new JwtSecurityConfig(tokenProvider))
+            ;
 
         return http.build();
     }
