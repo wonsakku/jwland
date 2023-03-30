@@ -1,7 +1,7 @@
 package com.jwland.jwland.config;
 
-import com.jwland.jwland.domain.DetailCode;
-import com.jwland.jwland.domain.GroupCode;
+import com.jwland.jwland.entity.DetailCode;
+import com.jwland.jwland.entity.GroupCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

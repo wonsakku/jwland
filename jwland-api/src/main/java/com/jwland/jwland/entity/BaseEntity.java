@@ -1,4 +1,4 @@
-package com.jwland.jwland.domain;
+package com.jwland.jwland.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
