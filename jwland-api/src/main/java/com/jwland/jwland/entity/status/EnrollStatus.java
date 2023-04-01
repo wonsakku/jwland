@@ -1,4 +1,4 @@
-package com.jwland.jwland.entity;
+package com.jwland.jwland.entity.status;
 
 import lombok.RequiredArgsConstructor;
 

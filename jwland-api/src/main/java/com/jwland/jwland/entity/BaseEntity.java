@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
-@EntityListeners( value = AuditingEntityListener.class)
+@EntityListeners(value = AuditingEntityListener.class)
 public class BaseEntity {
 
     @Column(name = "insert_account_id", updatable = false)
@@ -24,7 +24,7 @@ public class BaseEntity {
     private LocalDateTime createdDateTime;
     @Column(name = "update_account_id")
     @LastModifiedBy
-    protected Long modifiedBy;
+    private Long modifiedBy;
 
     @LastModifiedDate
     private LocalDateTime modifiedDateTime;

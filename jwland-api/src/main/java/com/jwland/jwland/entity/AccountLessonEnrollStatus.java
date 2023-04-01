@@ -1,5 +1,6 @@
 package com.jwland.jwland.entity;
 
+import com.jwland.jwland.entity.status.EnrollStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

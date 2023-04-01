@@ -1,5 +1,8 @@
 package com.jwland.jwland.entity;
 
+import com.jwland.jwland.entity.status.Grade;
+import com.jwland.jwland.entity.status.LessonStatus;
+import com.jwland.jwland.entity.status.LessonType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +22,11 @@ public class Lesson extends BaseEntity {
     @Column(nullable = false)
     private String lessonName;
 
-    private String lessonTypeCode;
+    private Grade targetGrade;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 
     @Column(length = 8)
     private String startDate;
