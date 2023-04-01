@@ -1,4 +1,4 @@
-package com.jwland.jwland.repository;
+package com.jwland.jwland.domain.lesson.repository;
 
 import com.jwland.jwland.entity.Lesson;
 import org.springframework.data.jpa.repository.JpaRepository;

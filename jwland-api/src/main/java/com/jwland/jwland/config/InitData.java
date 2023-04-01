@@ -2,6 +2,7 @@ package com.jwland.jwland.config;
 
 import com.jwland.jwland.entity.DetailCode;
 import com.jwland.jwland.entity.GroupCode;
+import com.jwland.jwland.entity.Subject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,15 @@ public class InitData {
         em.persist(dc22);
         em.persist(dc23);
 
+        Subject subject1 = Subject.toInsertEntity("생명과학1");
+        Subject subject2 = Subject.toInsertEntity("생명과학2");
+        Subject subject3 = Subject.toInsertEntity("화학1");
+        Subject subject4 = Subject.toInsertEntity("화학2");
+
+        em.persist(subject1);
+        em.persist(subject2);
+        em.persist(subject3);
+        em.persist(subject4);
 
     }
 }

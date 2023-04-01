@@ -1,4 +1,4 @@
-package com.jwland.jwland.dto.subject;
+package com.jwland.jwland.domain.subject.dto;
 
 import com.jwland.jwland.entity.Subject;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class SubjectDto {
         this.name = name;
     }
 
-    public Subject toEnrollDto() {
+    public Subject toInsertEntity() {
         return Subject.toInsertEntity(this.name);
     }
 
