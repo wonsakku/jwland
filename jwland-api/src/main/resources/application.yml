@@ -26,3 +26,5 @@ jwt:
   token-validity-in-seconds: 10800000
 
 dev-status: test
+
+ui-server: http://localhost:3000
