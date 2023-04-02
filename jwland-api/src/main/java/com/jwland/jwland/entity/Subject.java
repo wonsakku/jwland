@@ -25,9 +25,9 @@ public class Subject extends BaseEntity{
     private String name;
     private String useYn;
 
-    private Subject(String name){
+    private Subject(String name, String useYn){
         this.name = Objects.requireNonNull(name, "insert 시 name 은 필수값입니다.");
-        this.useYn = Y;
+        this.useYn = useYn;
     }
 
     private Subject(Long id, String name, String useYn){
@@ -36,8 +36,8 @@ public class Subject extends BaseEntity{
         this.useYn = Objects.requireNonNull(useYn, "update 시 useYn 는 필수값입니다.");
     }
 
-    public static Subject toInsertEntity(String name) {
-        return new Subject(name);
+    public static Subject toInsertEntity(String name, String useYn) {
+        return new Subject(name, useYn);
     }
 
     public static Subject toUpdateEntity(Long id, String name, String useYn) {

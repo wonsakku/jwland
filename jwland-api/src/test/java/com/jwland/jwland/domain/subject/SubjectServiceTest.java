@@ -34,7 +34,7 @@ class SubjectServiceTest {
     @DisplayName("과목 저장")
     void subjectSaveTest() {
 
-        SubjectDto subjectDto = new SubjectDto("생명과학1");
+        SubjectDto subjectDto = new SubjectDto("생명과학1","Y");
         Long subjectId = subjectService.enrollSubject(subjectDto);
 
         Subject findById = subjectRepository.findById(subjectId).orElseThrow();
@@ -47,7 +47,7 @@ class SubjectServiceTest {
     void subjectUpdateTest(){
 
         // given
-        Subject enrolled = subjectRepository.save(Subject.toInsertEntity("생명과학"));
+        Subject enrolled = subjectRepository.save(Subject.toInsertEntity("생명과학", "Y"));
 
         String updatingSubjectName = "생명과학1";
         SubjectDto subjectDto = new SubjectDto(enrolled.getId(), updatingSubjectName, "N");

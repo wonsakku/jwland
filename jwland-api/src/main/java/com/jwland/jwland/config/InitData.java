@@ -35,10 +35,10 @@ public class InitData {
         em.persist(dc22);
         em.persist(dc23);
 
-        Subject subject1 = Subject.toInsertEntity("생명과학1");
-        Subject subject2 = Subject.toInsertEntity("생명과학2");
-        Subject subject3 = Subject.toInsertEntity("화학1");
-        Subject subject4 = Subject.toInsertEntity("화학2");
+        Subject subject1 = Subject.toInsertEntity("생명과학1", "Y");
+        Subject subject2 = Subject.toInsertEntity("생명과학2", "Y");
+        Subject subject3 = Subject.toInsertEntity("화학1", "Y");
+        Subject subject4 = Subject.toInsertEntity("화학2", "Y");
 
         em.persist(subject1);
         em.persist(subject2);
