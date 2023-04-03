@@ -4,12 +4,14 @@ import com.jwland.jwland.constant.Time;
 import com.jwland.jwland.entity.Lesson;
 import com.jwland.jwland.entity.Subject;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class LessonDto {

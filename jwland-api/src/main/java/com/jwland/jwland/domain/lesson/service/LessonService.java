@@ -2,6 +2,7 @@ package com.jwland.jwland.domain.lesson.service;
 
 import com.jwland.jwland.domain.lesson.dto.LessonDetailDto;
 import com.jwland.jwland.domain.lesson.dto.LessonDto;
+import com.jwland.jwland.domain.lesson.dto.LessonSubjectsDto;
 import com.jwland.jwland.domain.lesson.dto.LessonsDto;
 import com.jwland.jwland.entity.Lesson;
 import com.jwland.jwland.entity.Subject;
@@ -62,6 +63,7 @@ public class LessonService {
     public LessonDetailDto getLessonDetail(Long lessonId) {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 lessonId 입니다.."));
+
         return new LessonDetailDto(lesson);
     }
 
@@ -75,5 +77,12 @@ public class LessonService {
         }
 
         lessonRepository.delete(targetLesson);
+    }
+
+    public List<LessonSubjectsDto> getLessonSubjects() {
+        List<Subject> subjects = subjectRepository.findActivatedSubjects();
+        return subjects.stream()
+                .map(LessonSubjectsDto::new)
+                .collect(Collectors.toList());
     }
 }

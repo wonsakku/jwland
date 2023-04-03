@@ -5,6 +5,7 @@ import com.jwland.jwland.entity.status.LessonStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -43,7 +44,7 @@ public class Lesson extends BaseEntity {
         this.lessonStatus = lessonStatus;
     }
 
-    public Lesson(Long id, String lessonName, Grade targetGrade, Subject subject, String startDate, LessonStatus lessonStatus) {
+    private Lesson(Long id, String lessonName, Grade targetGrade, Subject subject, String startDate, LessonStatus lessonStatus) {
         this.id = Objects.requireNonNull(id);
         this.lessonName = Objects.requireNonNull(lessonName);
         this.targetGrade = targetGrade;

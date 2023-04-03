@@ -2,7 +2,10 @@ package com.jwland.jwland.config;
 
 import com.jwland.jwland.entity.DetailCode;
 import com.jwland.jwland.entity.GroupCode;
+import com.jwland.jwland.entity.Lesson;
 import com.jwland.jwland.entity.Subject;
+import com.jwland.jwland.entity.status.Grade;
+import com.jwland.jwland.entity.status.LessonStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +48,12 @@ public class InitData {
         em.persist(subject3);
         em.persist(subject4);
 
+        Lesson lesson1 = Lesson.toInsertEntity("테스트", Grade.HIGH_3.name(), subject1, "20230403", LessonStatus.OPEN.name());
+        Lesson lesson2 = Lesson.toInsertEntity("테스트2", Grade.HIGH_2.name(), subject1, "20230415", LessonStatus.BEFORE_OPEN.name());
+        Lesson lesson3 = Lesson.toInsertEntity("테스트3", Grade.HIGH_1.name(), subject1, "20230410", LessonStatus.BEFORE_OPEN.name());
+
+        em.persist(lesson1);
+        em.persist(lesson2);
+        em.persist(lesson3);
     }
 }

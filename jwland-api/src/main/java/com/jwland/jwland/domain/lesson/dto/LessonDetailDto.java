@@ -18,8 +18,10 @@ public class LessonDetailDto {
     public LessonDetailDto(Lesson lesson){
         this.id = lesson.getId();
         this.lessonName = lesson.getLessonName();
-        this.targetGradeCode = lesson.getTargetGrade().getGrade();
+        this.targetGradeCode = lesson.getTargetGrade().name();
         this.subjectId = lesson.getSubject().getId();
+        this.startDate = lesson.getStartDate();
+        this.lessonStatusCode = lesson.getLessonStatus().name();
     }
 
 

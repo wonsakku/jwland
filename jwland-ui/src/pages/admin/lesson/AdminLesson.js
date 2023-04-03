@@ -16,7 +16,6 @@ const AdminLesson = () => {
         axios.get(serverUrl + "/lessons")
             .then(res => {
                 const data = res.data;
-                console.log(data);
                 setLessons(data.data);
             });
     }
