@@ -1,8 +1,10 @@
+import AdminSubject from "./subject/AdminSubject";
+
 const adminMenu = [
     {
         path: "/admin/subjects",
         title: "과목 관리",
-        component: ""
+        component: AdminSubject
     },
     {
         path: "/admin/lessons",
@@ -18,8 +20,7 @@ const adminMenu = [
         path: "/admin/exams",
         title: "시험 관리",
         component: ""
-    },
-
+    }
 ]
 
 export default adminMenu;
