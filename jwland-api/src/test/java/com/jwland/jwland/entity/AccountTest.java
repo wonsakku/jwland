@@ -1,7 +1,10 @@
 package com.jwland.jwland.entity;
 
+import com.jwland.jwland.entity.status.Grade;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -23,7 +26,8 @@ class AccountTest {
     void test(){
 
         //given
-        Account account = new Account("loginId", "name", "password", "grade", "school");
+        String password = "password";
+        Account account = Account.insertEntity("loginId", "name", password, Grade.HIGH_2.name(), "school");
         LocalDateTime beforePersist = LocalDateTime.now();
 
         em.persist(account);

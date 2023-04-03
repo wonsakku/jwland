@@ -15,7 +15,7 @@ const AdminPageCard = ({ path, title, children }) => {
                         focusable="false">
                         <title>{title}</title>
                         <rect width="100%" height="100%" fill="#55595c" />
-                        <text x="42%" y="50%" fill="#eceeef" dy=".3em">{title}</text>
+                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">{title}</text>
                     </svg>
                 </Link>
                 <div className="card-body">

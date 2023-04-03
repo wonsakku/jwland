@@ -11,7 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(schema = Constant.SCHEMA_JWLAND,
         uniqueConstraints = @UniqueConstraint(name = "detail_code_unique",
-        columnNames = {"group_code", "code"})
+        columnNames = {"group_code_id", "code"})
 )
 @Entity
 public class DetailCode extends BaseEntity{
@@ -21,7 +21,7 @@ public class DetailCode extends BaseEntity{
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "group_code")
+    @JoinColumn(name = "group_code_id")
     private GroupCode groupCode;
 
     @Column(name = "code")

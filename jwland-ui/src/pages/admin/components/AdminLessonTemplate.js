@@ -16,7 +16,7 @@ const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => 
     }, []);
 
     const getTargetGrades = () => {
-        axios.get(serverUrl + "/lessons/target-grades")
+        axios.get(serverUrl + "/common/target-grades")
             .then(res => {
                 const grades = res.data.data;
                 setTargetGrades(grades);
@@ -32,7 +32,7 @@ const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => 
     }
 
     const getLessonStatus = () => {
-        axios.get(serverUrl + "/lessons/lesson-status")
+        axios.get(serverUrl + "/common/lesson-status")
             .then(res => {
                 const data = res.data.data;
                 setLessonStatus(data);
@@ -55,8 +55,8 @@ const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => 
         <div className="container">
             <div className="p-5 mb-4 bg-body-tertiary border rounded-3">
                 <form>
-                    <div className="row p-4">
-                        <div className="col-1">
+                    <div className="row p-4 align-items-center">
+                        <div className="col-1 d-flex justify-content-end">
                             <label htmlFor="lessonName">수업명</label>
                         </div>
                         <div className="col-11">
@@ -64,8 +64,8 @@ const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => 
                         </div>
                     </div>
 
-                    <div className="row p-4">
-                        <div className="col-1">
+                    <div className="row p-4  align-items-center">
+                        <div className="col-1 d-flex justify-content-end">
                             <label>대상학년</label>
                         </div>
                         <div className="col-11">
@@ -83,8 +83,8 @@ const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => 
                         </div>
                     </div>
 
-                    <div className="row p-4">
-                        <div className="col-1">
+                    <div className="row p-4  align-items-center">
+                        <div className="col-1 d-flex justify-content-end">
                             <label>과목</label>
                         </div>
                         <div className="col-11">
@@ -102,8 +102,8 @@ const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => 
                         </div>
                     </div>
 
-                    <div className="row p-4">
-                        <div className="col-1">
+                    <div className="row p-4  align-items-center">
+                        <div className="col-1 d-flex justify-content-end">
                             <label>진행상태</label>
                         </div>
                         <div className="col-11">
@@ -121,8 +121,8 @@ const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => 
                         </div>
                     </div>
 
-                    <div className="row p-4">
-                        <div className="col-1">
+                    <div className="row p-4  align-items-center">
+                        <div className="col-1 d-flex justify-content-end">
                             <label htmlFor="startDate">시작일</label>
                         </div>
                         <div className="col-11">

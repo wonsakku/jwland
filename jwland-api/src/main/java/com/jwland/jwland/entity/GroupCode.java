@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -19,6 +21,7 @@ public class GroupCode extends BaseEntity {
     private String code;
     private String name;
     private String description;
+
 
     public GroupCode(String code, String name, String description) {
         this.code = Objects.requireNonNull(code);

@@ -1,5 +1,6 @@
 package com.jwland.jwland.entity;
 
+import com.jwland.jwland.entity.status.Grade;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,17 +27,21 @@ public class Account extends BaseEntity {
     private String password;
 
     @Column(nullable = false)
-    private String gradeCode;
+    private Grade grade;
 
     @Column(nullable = false)
     private String schoolCode;
 
-    public Account(String loginId, String name, String password, String gradeCode, String schoolCode) {
+    private Account(String loginId, String name, String password, Grade grade, String schoolCode) {
         this.loginId = loginId;
         this.name = name;
         this.password = password;
-        this.gradeCode = gradeCode;
+        this.grade = grade;
         this.schoolCode = schoolCode;
+    }
+
+    public static Account insertEntity(String loginId, String name, String password, String gradeCode, String schoolCode){
+        return new Account(loginId, name, password, Grade.findByName(gradeCode), schoolCode);
     }
 
     //    private Set<RoleType> roles = new HashSet<>();

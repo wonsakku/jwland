@@ -46,7 +46,7 @@ const AdminLessonEnroll = () => {
 
     return (
         <>
-            <h2 className="py-5">수업 등록 페이지</h2>
+            <h2 className="py-5 col-8">수업 등록 페이지</h2>
             <AdminLessonTemplate clickEvent={enrollLesson} />
         </>
     );

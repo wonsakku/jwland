@@ -21,8 +21,8 @@ const Header = () => {
                     </form> */}
 
                     <div className="text-end">
-                        <button type="button" className="btn btn-outline-light me-2">Login</button>
-                        <button type="button" className="btn btn-warning">Sign-up</button>
+                        <button type="button" className="btn btn-primary me-2">로그인</button>
+                        <Link type="button" className="btn btn-success" to="/join">회원가입</Link>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 package com.jwland.jwland.config;
 
+import com.jwland.jwland.constant.CommonCode;
 import com.jwland.jwland.entity.DetailCode;
 import com.jwland.jwland.entity.GroupCode;
 import com.jwland.jwland.entity.Lesson;
@@ -22,10 +23,8 @@ public class InitData {
     @Transactional
     public void init() {
 
-        GroupCode gc1 = new GroupCode("G01", "학년", "");
-        GroupCode gc2 = new GroupCode("G02", "학교명", "");
+        GroupCode gc2 = new GroupCode(CommonCode.GroupCode.SCHOOL_CODE.getCode(), "학교명", "");
 
-        em.persist(gc1);
         em.persist(gc2);
 
         DetailCode dc20 = new DetailCode(gc2, "G0200", "재원랜드");

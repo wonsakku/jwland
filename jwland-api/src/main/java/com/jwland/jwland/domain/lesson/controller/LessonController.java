@@ -66,33 +66,12 @@ public class LessonController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/target-grades")
-    public ResponseEntity<DefaultResponseDto> getTargetGrades(){
-        List<EnumDto> data = Stream.of(Grade.values()).map(value -> EnumDto.builder()
-                        .code(value.name())
-                        .name(value.getGrade())
-                        .build())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK, data) );
-    }
-
     @GetMapping("/subjects")
     public ResponseEntity<DefaultResponseDto> getLessonSubjects(){
         List<LessonSubjectsDto> subjects = lessonService.getLessonSubjects();
         return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK, subjects) );
     }
 
-    @GetMapping("/lesson-status")
-    public ResponseEntity<DefaultResponseDto> getLessonStatus(){
-        List<EnumDto> status = Stream.of(LessonStatus.values()).map(value -> EnumDto.builder()
-                        .code(value.name())
-                        .name(value.getStatus())
-                        .build())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK, status) );
-    }
 
 
 }
