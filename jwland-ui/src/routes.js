@@ -1,6 +1,6 @@
 import Home from "./pages/Home";
 import Admin from "./pages/admin/Admin";
-import adminMenu from "./pages/admin/adminMenu";
+import adminRoutes from "./pages/admin/env/adminRoutes";
 
 const routes = [
 
@@ -11,10 +11,10 @@ const routes = [
     {
         path: "/admin",
         component: Admin
-    }
+    },
+
+    ...adminRoutes,
+
 ]
-
-adminMenu.forEach(am => routes.push(am));
-
 
 export default routes;

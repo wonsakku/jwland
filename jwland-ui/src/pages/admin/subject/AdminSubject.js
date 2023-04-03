@@ -1,9 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import serverUrl from "../../../serverUrl";
-import AdminSubjectCard from "./AdminSubjectCard";
-import { element } from "prop-types";
-import ReactDOM from 'react-dom';
+import AdminSubjectCard from "../components/AdminSubjectCard";
+
 
 const AdminSubject = () => {
 
@@ -40,8 +39,6 @@ const AdminSubject = () => {
             alert("등록되지 않은 subject가 있습니다.");
             return;
         }
-
-        const subjectRoot = document.querySelector("#subject-root");
 
         const subject = {
             id: "new-subject",

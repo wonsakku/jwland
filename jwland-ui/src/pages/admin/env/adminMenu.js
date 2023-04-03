@@ -1,4 +1,5 @@
-import AdminSubject from "./subject/AdminSubject";
+import AdminSubject from "../subject/AdminSubject";
+import AdminLesson from "../lesson/AdminLesson";
 
 const adminMenu = [
     {
@@ -9,7 +10,7 @@ const adminMenu = [
     {
         path: "/admin/lessons",
         title: "수업 관리",
-        component: ""
+        component: AdminLesson
     },
     {
         path: "/admin/students",
