@@ -1,13 +1,15 @@
 package com.jwland.jwland.config;
 
 import com.jwland.jwland.constant.CommonCode;
-import com.jwland.jwland.entity.DetailCode;
-import com.jwland.jwland.entity.GroupCode;
-import com.jwland.jwland.entity.Lesson;
-import com.jwland.jwland.entity.Subject;
+import com.jwland.jwland.domain.account.dto.AccountDto;
+import com.jwland.jwland.domain.account.repository.AccountRepository;
+import com.jwland.jwland.domain.account.service.AccountService;
+import com.jwland.jwland.entity.*;
 import com.jwland.jwland.entity.status.Grade;
 import com.jwland.jwland.entity.status.LessonStatus;
+import com.jwland.jwland.entity.status.RoleType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ public class InitData {
 
 
     private final EntityManager em;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void init() {
@@ -54,5 +57,18 @@ public class InitData {
         em.persist(lesson1);
         em.persist(lesson2);
         em.persist(lesson3);
+
+        final AccountDto accountDto = new AccountDto("test", "test", "test", dc20.getCode(), Grade.HIGH_3.name());
+        final String encoded = passwordEncoder.encode(accountDto.getPassword());
+        final Account account = accountDto.toInsertEntity(encoded);
+
+        em.persist(account);
+
+        final AccountRole accountRole1 = new AccountRole(account, RoleType.ROLE_ADMIN);
+        final AccountRole accountRole2 = new AccountRole(account, RoleType.ROLE_USER);
+
+        em.persist(accountRole1);
+        em.persist(accountRole2);
+
     }
 }
