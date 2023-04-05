@@ -23,6 +23,7 @@ public class Lesson extends BaseEntity {
     @Column(nullable = false)
     private String lessonName;
 
+    @Enumerated(EnumType.STRING)
     private Grade targetGrade;
 
     @ManyToOne(fetch = FetchType.LAZY)

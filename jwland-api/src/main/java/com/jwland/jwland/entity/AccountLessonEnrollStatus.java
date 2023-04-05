@@ -25,6 +25,7 @@ public class AccountLessonEnrollStatus extends BaseEntity{
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
+    @Enumerated(EnumType.STRING)
     private EnrollStatus enrollStatus;
 
 }
