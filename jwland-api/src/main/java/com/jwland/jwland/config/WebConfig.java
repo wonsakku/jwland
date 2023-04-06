@@ -1,5 +1,6 @@
 package com.jwland.jwland.config;
 
+import com.jwland.jwland.jwt.JwtConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
                         HttpMethod.PUT.name(),
                         HttpMethod.DELETE.name()
                 ).allowCredentials(false)
+                .exposedHeaders(JwtConstants.AUTHORIZATION)
                 .maxAge(5000);
     }
 
