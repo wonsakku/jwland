@@ -1,17 +1,16 @@
 package com.jwland.jwland.config;
 
-import com.jwland.jwland.jwt.JwtAccessDeniedHandler;
-import com.jwland.jwland.jwt.JwtAuthenticationEntryPoint;
-import com.jwland.jwland.jwt.JwtSecurityConfig;
-import com.jwland.jwland.jwt.TokenProvider;
+import com.jwland.jwland.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @Configuration
@@ -34,6 +33,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http.apply(new JwtSecurityConfig(tokenProvider));
+//        http.addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf()
                 .disable()
                 .exceptionHandling()
@@ -45,9 +49,12 @@ public class SecurityConfig {
                     .sameOrigin()
             .and()
                 .authorizeRequests((auth) ->
-                        auth.anyRequest().permitAll())
-            .apply(new JwtSecurityConfig(tokenProvider))
-            ;
+
+                        auth
+                                .antMatchers("/test").authenticated()
+                                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                                .anyRequest().permitAll()
+                );
 
         return http.build();
     }

@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByLoginId(String name);
 
-    @Query("SELECT a FROM Account a JOIN FETCH a.roles WHERE a.loginId = :loginId")
+    @Query("SELECT a FROM Account a LEFT JOIN FETCH a.roles WHERE a.loginId = :loginId")
     Optional<Account> findAccountByLoginIdIncludeRoles(String loginId);
 }
