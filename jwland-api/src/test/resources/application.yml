@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: test
   datasource:
     url: jdbc:postgresql://192.168.238.128/postgres
     username: postgres
