@@ -1,6 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
+import * as jwt from "../jwt";
+import { useState, useEffect } from "react";
 
-const Header = () => {
+const Header = ({ logined, isAdmin }) => {
+
+    const logout = () => {
+        jwt.logout();
+    }
 
     return (
         <header className="p-3 text-bg-dark">
@@ -8,21 +14,31 @@ const Header = () => {
                 <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                     <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <NavLink className="me-3 nav-link px-2 text-white" to="/">Home</NavLink>
-                        <NavLink className="me-3 nav-link px-2 text-white" to="/admin">Admin</NavLink>
-                        <NavLink className="me-3 nav-link px-2 text-white" to="/">공지사항</NavLink>
-                        <NavLink className="me-3 nav-link px-2 text-white" to="/">클리닉/보충</NavLink>
-                        <NavLink className="me-3 nav-link px-2 text-white" to="/">기출 및 문제 오타/정오</NavLink>
-                        <NavLink className="me-3 nav-link px-2 text-white" to="/">자료실</NavLink>
-                        <NavLink className="me-3 nav-link px-2 text-white" to="/">문의</NavLink>
+                        {isAdmin &&
+                            <NavLink className="me-3 nav-link px-2 text-white" to="/admin">Admin</NavLink>
+                        }
+                        {logined &&
+                            <>
+                                <NavLink className="me-3 nav-link px-2 text-white" to="/">공지사항</NavLink>
+                                <NavLink className="me-3 nav-link px-2 text-white" to="/">클리닉/보충</NavLink>
+                                <NavLink className="me-3 nav-link px-2 text-white" to="/">기출 및 문제 오타/정오</NavLink>
+                                <NavLink className="me-3 nav-link px-2 text-white" to="/">자료실</NavLink>
+                                <NavLink className="me-3 nav-link px-2 text-white" to="/">문의</NavLink>
+                            </>
+                        }
+
                     </ul>
-
-                    {/* <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                        <input type="search" className="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search" />
-                    </form> */}
-
                     <div className="text-end">
-                        <button type="button" className="btn btn-primary me-2">로그인</button>
-                        <Link type="button" className="btn btn-success" to="/join">회원가입</Link>
+                        {logined ?
+                            <>
+                                <button type="button" className="btn btn-warning me-2" onClick={logout}>로그아웃</button>
+                            </>
+                            :
+                            <>
+                                <Link type="button" className="btn btn-primary me-2" to="/login">로그인</Link>
+                                <Link type="button" className="btn btn-success" to="/join">회원가입</Link>
+                            </>
+                        }
                     </div>
                 </div>
             </div>
