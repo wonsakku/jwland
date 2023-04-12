@@ -29,8 +29,10 @@ public class AdminAccountController {
     public ResponseEntity<DefaultResponseDto<Page<AccountsDto>>> test(
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "id", direction = Sort.Direction.ASC)
-            })  Pageable pageable){
-        final Page<AccountsDto> data = adminAccountService.findAccounts(pageable);
+            })  Pageable pageable,
+            @RequestParam(name="name", required = false, defaultValue = "") String name,
+            @RequestParam(name = "accountStatus", required = false) String accountStatus){
+        final Page<AccountsDto> data = adminAccountService.findAccounts(pageable, name, accountStatus);
         return ResponseEntity.ok(new DefaultResponseDto<>( HttpStatus.OK, data ) );
     }
 

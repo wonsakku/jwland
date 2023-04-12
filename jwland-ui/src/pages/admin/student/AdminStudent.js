@@ -6,6 +6,8 @@ const AdminStudent = () => {
 
     const [accounts, setAccounts] = useState([]);
     const [accountIds, setAccountIds] = useState([]);
+    const [accountStatus, setAccountStatus] = useState("APPROVAL_REQUEST");
+    const [accountName, setAccountName] = useState("");
 
     useEffect(() => {
         getAccounts();
@@ -13,7 +15,19 @@ const AdminStudent = () => {
 
     const getAccounts = () => {
         const headers = jwt.authHeader();
-        axios.get("/admin/accounts", {
+        let path = "/admin/accounts?";
+
+        if (accountStatus !== "") {
+            path += "accountStatus=" + accountStatus + "&";
+        }
+
+        if (accountName !== "") {
+            path += "name=" + accountName;
+        }
+
+
+
+        axios.get(path, {
             headers: headers
         })
             .then(res => {
@@ -57,6 +71,7 @@ const AdminStudent = () => {
     }
 
 
+
     return (
         <>
             <div className="d-flex justify-content-between mt-5">
@@ -67,6 +82,27 @@ const AdminStudent = () => {
                     <button className="btn btn-danger me-1" value="DELETED" onClick={updateAccountStatus}>삭제</button>
                 </div>
             </div>
+            <div className="d-flex justify-content-end row mt-4">
+                <div className="col-2 pr-0">
+                    <select className="form-select" onChange={(e) => setAccountStatus(e.target.value)} defaultValue={accountStatus}>
+                        <option value="">전체</option>
+                        <option value="APPROVAL_REQUEST">승인 요청</option>
+                        <option value="APPROVED">승인</option>
+                        <option value="DORMANT">휴면</option>
+                        <option value="DELETED">삭제</option>
+                    </select>
+                </div>
+                <div className="col-3">
+                    <input className="form-control"
+                        onChange={(e) => setAccountName(e.target.value)}
+                        onKeyUp={(e) => { e.key === "Enter" && getAccounts() }
+                        }
+                        value={accountName}></input>
+                </div>
+                <div className="col-1 d-flex justify-content-end pl-0">
+                    <button className="btn btn-primary" style={{ width: "100%" }} onClick={getAccounts}>조회</button>
+                </div>
+            </div >
             <table className="table mt-5 text-center">
                 <thead>
                     <tr className="table-primary">

@@ -22,8 +22,9 @@ public class AdminAccountService {
     private final AccountRepository accountRepository;
 
 
-    public Page<AccountsDto> findAccounts(Pageable pageable) {
-        final Page<Account> data = accountRepository.findAll(pageable);
+    public Page<AccountsDto> findAccounts(Pageable pageable, String name, String accountStatus) {
+        final Page<Account> data = accountRepository.findAccountsByNameContaining(pageable, name);
+//        final Page<Account> data = accountRepository.findAll(pageable);
         return data.map(AccountsDto::new);
     }
 
