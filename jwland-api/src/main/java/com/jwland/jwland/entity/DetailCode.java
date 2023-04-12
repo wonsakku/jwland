@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 public class DetailCode extends BaseEntity{
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "detail_code_id")
     private Long id;
 

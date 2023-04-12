@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 @ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(schema = Constant.SCHEMA_JWLAND)
+@Table(schema = Constant.SCHEMA_JWLAND, name = "account")
 @Entity
 public class Account extends BaseEntity {
 
     private final static String Y = "Y";
     private final static String N = "N";
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_id")
     private Long id;
 
@@ -76,5 +76,7 @@ public class Account extends BaseEntity {
     public String getSchoolName() {
         return this.school.getName();
     }
+
+
 }
 

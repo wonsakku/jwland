@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 public class GroupCode extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "group_code_id")
     private Long id;
     private String code;

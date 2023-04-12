@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 public class AccountLessonEnrollStatus extends BaseEntity{
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_class_eroll_status_id")
     private Long id;
 

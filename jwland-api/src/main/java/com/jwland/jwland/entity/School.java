@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(schema = Constant.SCHEMA_JWLAND, name = "school")
 public class School extends BaseEntity{
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "school_id")
     private Long id;
 

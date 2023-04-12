@@ -2,18 +2,17 @@ spring:
   profiles:
     active: test
   datasource:
-    url: jdbc:postgresql://192.168.238.128/postgres
-    username: postgres
-    password: "0000"
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:mem:jwland;INIT=CREATE SCHEMA IF NOT EXISTS JWLAND\; # schema 생성을 안해주면 해당 스키마를 찾을 수 없다고 에러 뜸.
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
-    #      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        dialect: org.hibernate.dialect.PostgreSQLDialect ## 이거땜에 h2로 테스트시 에러 뜸... 왜???
         #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100 # in query ??

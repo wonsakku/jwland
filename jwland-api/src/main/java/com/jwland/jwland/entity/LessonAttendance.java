@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Entity
 public class LessonAttendance extends BaseEntity{
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "lesson_attendance_id")
     private Long id;
 

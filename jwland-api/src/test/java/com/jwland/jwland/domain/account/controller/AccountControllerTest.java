@@ -5,8 +5,10 @@ import com.jwland.jwland.domain.account.dto.AccountDto;
 import com.jwland.jwland.domain.account.dto.LoginDto;
 import com.jwland.jwland.entity.Account;
 import com.jwland.jwland.entity.AccountRole;
+import com.jwland.jwland.entity.School;
 import com.jwland.jwland.entity.status.Grade;
 import com.jwland.jwland.entity.status.RoleType;
+import com.jwland.jwland.entity.status.SchoolClassification;
 import com.jwland.jwland.jwt.JwtConstants;
 import com.jwland.jwland.jwt.TokenProvider;
 import org.assertj.core.api.Assertions;
@@ -53,9 +55,15 @@ class AccountControllerTest {
 
     @BeforeEach
     void init(){
-        final AccountDto accountDto = new AccountDto("testcode", "testcode", "testcode", "G0200", Grade.HIGH_3.name());
+        School school = new School(SchoolClassification.HIGH, "sampleSchool", "Y");
+        em.persist(school);
+
+        System.out.println("~~~~~~~~~~~~~~~`");
+        System.out.println(school.getId());
+
+        final AccountDto accountDto = new AccountDto("testcode", "testcode", "testcode", school.getId(), Grade.TWO.name());
         final String encoded = passwordEncoder.encode(accountDto.getPassword());
-        final Account account = accountDto.toInsertEntity(encoded);
+        final Account account = accountDto.toInsertEntity(encoded, school);
 
         em.persist(account);
 
@@ -85,7 +93,6 @@ class AccountControllerTest {
                 .replace(JwtConstants.BEARER, "");
 
         assertThat(tokenProvider.validateToken(jwtToken)).isTrue();
-
     }
 
 }

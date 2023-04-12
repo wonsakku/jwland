@@ -17,7 +17,7 @@ public class Subject extends BaseEntity{
     private static final String Y = "Y";
     private static final String N = "N";
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "subject_id")
     private Long id;
 

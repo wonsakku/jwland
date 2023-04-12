@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 public class Lesson extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "lesson_id")
     private Long id;
 
