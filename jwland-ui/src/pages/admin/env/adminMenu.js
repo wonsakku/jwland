@@ -1,5 +1,6 @@
 import AdminSubject from "../subject/AdminSubject";
 import AdminLesson from "../lesson/AdminLesson";
+import AdminStudent from "../student/AdminStudent";
 
 const adminMenu = [
     {
@@ -15,7 +16,7 @@ const adminMenu = [
     {
         path: "/admin/students",
         title: "학생 관리",
-        component: ""
+        component: AdminStudent
     },
     {
         path: "/admin/exams",

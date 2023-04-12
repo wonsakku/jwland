@@ -1,12 +1,15 @@
 package com.jwland.jwland.entity;
 
 import com.jwland.jwland.entity.status.SchoolClassification;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(schema = Constant.SCHEMA_JWLAND, name = "school")
 public class School extends BaseEntity{
 

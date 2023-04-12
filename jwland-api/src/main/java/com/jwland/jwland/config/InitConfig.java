@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
 
-@Profile("local")
+@Profile({"local"})
 @RequiredArgsConstructor
 @Configuration
 public class InitConfig {
@@ -79,7 +79,7 @@ public class InitConfig {
 
             School[] schools = {school2, school3, school4};
             String[] gradeNames = {Grade.ONE.name(), Grade.TWO.name(), Grade.THREE.name()};
-            for(int i = 0 ; i < 100 ; i++){
+            for(int i = 0 ; i < 30 ; i++){
                 School school = schools[i % schools.length];
                 String gradeName = gradeNames[i % gradeNames.length];
                 final String password = "user" + i;

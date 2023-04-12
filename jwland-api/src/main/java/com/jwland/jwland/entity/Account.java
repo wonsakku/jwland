@@ -78,5 +78,8 @@ public class Account extends BaseEntity {
     }
 
 
+    public void updateAccountStatus(String accountStatusName) {
+        this.accountStatus = AccountStatus.findByName(accountStatusName);
+    }
 }
 

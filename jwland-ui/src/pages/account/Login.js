@@ -37,17 +37,6 @@ const Login = () => {
         });
     }
 
-    const test = () => {
-        const headers = jwt.authHeader();
-        console.log(headers);
-        axios.get("/test", {
-            headers: headers
-        }).then(res => {
-            console.log(res);
-        })
-    }
-
-
     return (
         <div className="text-center mt-5">
             <main className="form-signin w-100 m-auto">
@@ -65,8 +54,6 @@ const Login = () => {
                     </div>
 
                     <button className="w-100 btn btn-lg btn-primary mb-3" type="button" onClick={login}>Sign in</button>
-                    <button className="w-100 btn btn-lg btn-warning" type="button" onClick={test}>Test</button>
-
                 </form>
             </main>
         </div>

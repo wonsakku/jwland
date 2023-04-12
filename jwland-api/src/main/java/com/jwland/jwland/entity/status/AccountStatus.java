@@ -3,6 +3,8 @@ package com.jwland.jwland.entity.status;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.stream.Stream;
+
 @RequiredArgsConstructor
 @Getter
 public enum AccountStatus {
@@ -14,4 +16,12 @@ public enum AccountStatus {
     ;
 
     private final String status;
+
+    public static AccountStatus findByName(String accountStatusName) {
+        return Stream.of(values())
+                .filter(value -> value.name().equals(accountStatusName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 계정 상태입니다."))
+                ;
+    }
 }
