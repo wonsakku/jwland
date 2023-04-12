@@ -58,9 +58,6 @@ class AccountControllerTest {
         School school = new School(SchoolClassification.HIGH, "sampleSchool", "Y");
         em.persist(school);
 
-        System.out.println("~~~~~~~~~~~~~~~`");
-        System.out.println(school.getId());
-
         final AccountDto accountDto = new AccountDto("testcode", "testcode", "testcode", school.getId(), Grade.TWO.name());
         final String encoded = passwordEncoder.encode(accountDto.getPassword());
         final Account account = accountDto.toInsertEntity(encoded, school);
@@ -76,7 +73,7 @@ class AccountControllerTest {
 
 
     @Test
-    @DisplayName("로그인 성공 시 header 에 Authorization 에 jwt 토큰이 있는지, jwt이 유효한지 화인")
+    @DisplayName("로그인 성공 시 header 에 Authorization 에 jwt 토큰이 있는지, jwt이 유효한지 확인")
     void loginTest() throws Exception{
 
         final MvcResult mvcResult = this.mockMvc.perform(

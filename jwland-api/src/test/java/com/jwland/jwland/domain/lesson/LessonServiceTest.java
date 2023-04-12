@@ -1,6 +1,7 @@
 package com.jwland.jwland.domain.lesson;
 
 import com.jwland.jwland.domain.lesson.dto.LessonDto;
+import com.jwland.jwland.domain.subject.dto.SubjectDto;
 import com.jwland.jwland.entity.Lesson;
 import com.jwland.jwland.entity.Subject;
 import com.jwland.jwland.entity.status.Grade;
@@ -9,11 +10,15 @@ import com.jwland.jwland.domain.lesson.repository.LessonRepository;
 import com.jwland.jwland.domain.subject.repository.SubjectRepository;
 import com.jwland.jwland.domain.lesson.service.LessonService;
 import com.jwland.jwland.entity.status.SchoolClassification;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -28,16 +33,24 @@ class LessonServiceTest {
     @Autowired
     LessonRepository lessonRepository;
 
-    @Autowired
-    SubjectRepository subjectRepository;
 
+    @PersistenceContext
+    EntityManager em;
+    Subject subject;
+
+    @BeforeEach
+    void init(){
+        subject = new SubjectDto("테스트 과목", "Y").toInsertEntity();
+        em.persist(subject);
+        em.flush();
+        em.clear();
+    }
 
     @Test
     @DisplayName("수업 등록 테스트")
     void lessonEnrollTest(){
 
         // given
-        Subject subject = subjectRepository.findByName("생명과학1");
         LessonDto lessonDto = new LessonDto("나의 첫 강의", SchoolClassification.HIGH.name(), Grade.TWO.name(), subject.getId(), "20230401", LessonStatus.BEFORE_OPEN.name());
 
         // when
@@ -61,7 +74,9 @@ class LessonServiceTest {
         Lesson lesson = getTestLesson(LessonStatus.BEFORE_OPEN);
         Lesson saved = lessonRepository.save(lesson);
 
-        Subject updatingSubject = subjectRepository.findByName("화학1");
+        final Subject updatingSubject = new SubjectDto("subject 테스트 업데이트", "Y").toInsertEntity();
+        em.persist(updatingSubject);
+
         LessonDto updatingDto = new LessonDto(saved.getId(),
                 "업데이트 첫 강의",
                 SchoolClassification.HIGH.name(),
@@ -112,7 +127,7 @@ class LessonServiceTest {
 
 
     private Lesson getTestLesson(LessonStatus lessonStatus) {
-        Subject subject = subjectRepository.findByName("생명과학1");
+
         LessonDto lessonDto = new LessonDto(
                 "나의 첫 강의",
                 SchoolClassification.HIGH.name(),

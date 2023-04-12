@@ -42,6 +42,8 @@ class AccountServiceTest {
     void init(){
         school = new School(SchoolClassification.HIGH, "북산고", "Y");
         em.persist(school);
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println(school.getId());
     }
 
     @Test

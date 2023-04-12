@@ -81,12 +81,19 @@ class SubjectServiceTest {
     @DisplayName("과목 삭제 테스트")
     void deleteSubjectTest(){
 
-        Subject subject = subjectRepository.findByName("생명과학1");
-        Long subjectId = subject.getId();
+        final String subjectName = "생명과학1";
 
-        subjectService.deleteSubject(subjectId);
+        SubjectDto subjectDto = new SubjectDto(subjectName,"Y");
+        final Subject subject = subjectDto.toInsertEntity();
 
-        assertThat(subjectRepository.findById(subjectId).isEmpty()).isTrue();
+        em.persist(subject);
+
+        em.flush();
+        em.clear();
+
+        subjectService.deleteSubject(subject.getId());
+
+        assertThat(subjectRepository.findById(subject.getId()).isEmpty()).isTrue();
     }
 
 
