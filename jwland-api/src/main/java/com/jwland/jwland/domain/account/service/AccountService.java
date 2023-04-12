@@ -4,7 +4,9 @@ import com.jwland.jwland.domain.account.dto.AccountDto;
 import com.jwland.jwland.domain.account.dto.AuthenticatedAccount;
 import com.jwland.jwland.domain.account.dto.LoginDto;
 import com.jwland.jwland.domain.account.repository.AccountRepository;
+import com.jwland.jwland.domain.school.repository.SchoolRepository;
 import com.jwland.jwland.entity.Account;
+import com.jwland.jwland.entity.School;
 import com.jwland.jwland.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,21 +25,23 @@ import org.springframework.stereotype.Service;
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
+    private final SchoolRepository schoolRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
 
     public Long join(AccountDto accountDto) {
 
-        String loginId = accountDto.getLoginId();
-        accountRepository.findByLoginId(loginId).ifPresent((account) -> {
+        accountRepository.findByLoginId(accountDto.getLoginId()).ifPresent((account) -> {
             throw new IllegalStateException("존재하는 아이디입니다.");
         });
 
-        String password = accountDto.getPassword();
-        String encodedPassword = passwordEncoder.encode(password);
-        Account account = accountDto.toInsertEntity(encodedPassword);
-        Account saved = accountRepository.save(account);
+        final School school = schoolRepository.findById(accountDto.getSchoolId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 학교입니다."));
+
+        String encodedPassword = passwordEncoder.encode(accountDto.getPassword());
+
+        Account saved = accountRepository.save(accountDto.toInsertEntity(encodedPassword, school));
 
         return saved.getId();
     }

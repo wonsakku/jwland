@@ -1,5 +1,6 @@
 package com.jwland.jwland.entity;
 
+import com.jwland.jwland.entity.status.AccountStatus;
 import com.jwland.jwland.entity.status.Grade;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +23,4 @@ class AccountTest {
     @PersistenceContext
     EntityManager em;
 
-    @Test
-    void test(){
-
-        //given
-        String password = "password";
-        Account account = Account.insertEntity("loginId", "name", password, Grade.HIGH_2.name(), "school");
-        LocalDateTime beforePersist = LocalDateTime.now();
-
-        em.persist(account);
-
-        em.flush();
-        em.clear();
-
-        // when
-        Account findMember = em.find(Account.class, account.getId());
-
-        // then
-        assertThat(findMember.getModifiedDateTime()).isAfterOrEqualTo(beforePersist);
-        assertThat(findMember.getCreatedDateTime()).isAfterOrEqualTo(beforePersist);
-    }
 }

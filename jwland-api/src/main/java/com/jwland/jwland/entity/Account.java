@@ -1,12 +1,11 @@
 package com.jwland.jwland.entity;
 
+import com.jwland.jwland.entity.status.AccountStatus;
 import com.jwland.jwland.entity.status.Grade;
-import com.jwland.jwland.entity.status.RoleType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,6 +18,9 @@ import java.util.stream.Collectors;
 @Table(schema = Constant.SCHEMA_JWLAND)
 @Entity
 public class Account extends BaseEntity {
+
+    private final static String Y = "Y";
+    private final static String N = "N";
 
     @Id @GeneratedValue
     @Column(name = "account_id")
@@ -37,22 +39,32 @@ public class Account extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Grade grade;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "school_id")
+    private School school;
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String schoolCode;
+    private AccountStatus accountStatus;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private Set<AccountRole> roles = new HashSet<>();
 
-    private Account(String loginId, String name, String password, Grade grade, String schoolCode) {
+    private Account(String loginId, String name, String password, Grade grade, School school) {
+        this(loginId, name, password, grade, AccountStatus.APPROVAL_REQUEST, school);
+    }
+
+    private Account(String loginId, String name, String password, Grade grade, AccountStatus accountStatus, School school) {
         this.loginId = loginId;
         this.name = name;
         this.password = password;
         this.grade = grade;
-        this.schoolCode = schoolCode;
+        this.accountStatus = accountStatus;
+        this.school = school;
     }
 
-    public static Account insertEntity(String loginId, String name, String password, String gradeCode, String schoolCode){
-        return new Account(loginId, name, password, Grade.findByName(gradeCode), schoolCode);
+    public static Account insertEntity(String loginId, String name, String password, String gradeNumber, AccountStatus accountStatus, School school){
+        return new Account(loginId, name, password, Grade.findByNumber(gradeNumber), accountStatus, school);
     }
 
     public Set<String> getRoles(){
@@ -61,5 +73,8 @@ public class Account extends BaseEntity {
                 .collect(Collectors.toSet());
     }
 
+    public String getSchoolName() {
+        return this.school.getName();
+    }
 }
 

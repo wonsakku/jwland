@@ -1,6 +1,8 @@
 package com.jwland.jwland.domain.account.dto;
 
 import com.jwland.jwland.entity.Account;
+import com.jwland.jwland.entity.School;
+import com.jwland.jwland.entity.status.AccountStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,19 +26,25 @@ public class AccountDto {
     private String password;
     
     @NotNull(message = "학교 선택은 필수입니다.")
-    private String schoolCode;
-    @NotNull(message = "학년 선택은 필수입니다.")
-    private String gradeCode;
+    private Long schoolId;
 
-    public AccountDto(String name, String loginId, String password, String schoolCode, String gradeCode) {
+    private String approved;
+
+    @NotNull(message = "학년 선택은 필수입니다.")
+    private String gradeNumber;
+
+    public AccountDto(String name, String loginId, String password, Long schoolId, String gradeNumber) {
         this.name = name;
         this.loginId = loginId;
         this.password = password;
-        this.schoolCode = schoolCode;
-        this.gradeCode = gradeCode;
+        this.schoolId = schoolId;
+        this.gradeNumber = gradeNumber;
     }
 
-    public Account toInsertEntity(String encodedPassword) {
-        return Account.insertEntity(this.loginId, this.name, encodedPassword, this.gradeCode, this.schoolCode);
+    public Account toInsertEntity(String encodedPassword, School school) {
+        return Account.insertEntity(this.loginId, this.name, encodedPassword, this.gradeNumber, AccountStatus.APPROVAL_REQUEST, school);
+    }
+    public Account toInsertEntity(String encodedPassword, AccountStatus accountStatus, School school) {
+        return Account.insertEntity(this.loginId, this.name, encodedPassword, this.gradeNumber, accountStatus, school);
     }
 }

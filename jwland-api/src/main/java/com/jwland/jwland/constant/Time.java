@@ -9,7 +9,7 @@ public interface Time {
 
 
     interface Pattern{
-       String DEFAULT_PATTERN = "YYYY-MM-DD HH:mm:ss";
+       String DEFAULT_PATTERN = "YYYY-MM-dd HH:mm:ss";
     }
 
     interface Zone{

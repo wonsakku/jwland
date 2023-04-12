@@ -8,6 +8,7 @@ import com.jwland.jwland.entity.status.LessonStatus;
 import com.jwland.jwland.domain.lesson.repository.LessonRepository;
 import com.jwland.jwland.domain.subject.repository.SubjectRepository;
 import com.jwland.jwland.domain.lesson.service.LessonService;
+import com.jwland.jwland.entity.status.SchoolClassification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ class LessonServiceTest {
 
         // given
         Subject subject = subjectRepository.findByName("생명과학1");
-        LessonDto lessonDto = new LessonDto("나의 첫 강의", Grade.HIGH_2.name(), subject.getId(), "20230401", LessonStatus.BEFORE_OPEN.name());
+        LessonDto lessonDto = new LessonDto("나의 첫 강의", SchoolClassification.HIGH.name(), Grade.TWO.name(), subject.getId(), "20230401", LessonStatus.BEFORE_OPEN.name());
 
         // when
         Long lessonId = lessonService.enrollLesson(lessonDto);
@@ -49,7 +50,7 @@ class LessonServiceTest {
         assertThat(subject.getName()).isEqualTo(enrolledLesson.getSubjectName());
         assertThat(lessonDto.getLessonStatusCode()).isEqualTo(enrolledLesson.getLessonStatus().name());
         assertThat(lessonDto.getStartDate()).isEqualTo(enrolledLesson.getStartDate());
-        assertThat(lessonDto.getTargetGradeCode()).isEqualTo(enrolledLesson.getTargetGrade().name());
+        assertThat(lessonDto.getTargetGradeName()).isEqualTo(enrolledLesson.getTargetGrade().name());
     }
 
     @Test
@@ -61,14 +62,20 @@ class LessonServiceTest {
         Lesson saved = lessonRepository.save(lesson);
 
         Subject updatingSubject = subjectRepository.findByName("화학1");
-        LessonDto updatingDto = new LessonDto(saved.getId(), "업데이트 첫 강의", Grade.HIGH_3.name(), updatingSubject.getId(), "20230401", LessonStatus.OPEN.name());
+        LessonDto updatingDto = new LessonDto(saved.getId(),
+                "업데이트 첫 강의",
+                SchoolClassification.HIGH.name(),
+                Grade.THREE.name(),
+                updatingSubject.getId(),
+                "20230401",
+                LessonStatus.OPEN.name());
 
         // when
         Long updatedId = lessonService.updateLesson(updatingDto);
         Lesson updated = lessonRepository.findById(updatedId).orElseThrow();
 
         assertThat(updatingDto.getLessonName()).isEqualTo(updated.getLessonName());
-        assertThat(updatingDto.getTargetGradeCode()).isEqualTo(updated.getTargetGrade().name());
+        assertThat(updatingDto.getTargetGradeName()).isEqualTo(updated.getTargetGrade().name());
         assertThat(updatingDto.getSubjectId()).isEqualTo(updated.getSubject().getId());
         assertThat(updatingSubject.getName()).isEqualTo(updated.getSubjectName()); // transaction 이 없을 경우 lazyLoading 으로 인한 초기화 에러 발생?
         assertThat(updatingSubject.getName()).isEqualTo(updated.getSubject().getName());
@@ -106,7 +113,14 @@ class LessonServiceTest {
 
     private Lesson getTestLesson(LessonStatus lessonStatus) {
         Subject subject = subjectRepository.findByName("생명과학1");
-        LessonDto lessonDto = new LessonDto("나의 첫 강의", Grade.HIGH_2.name(), subject.getId(), "20230401", lessonStatus.name());
+        LessonDto lessonDto = new LessonDto(
+                "나의 첫 강의",
+                SchoolClassification.HIGH.name(),
+                Grade.TWO.name(),
+                subject.getId(),
+                "20230401",
+                lessonStatus.name()
+        );
         Lesson lesson = lessonDto.toInsertEntity(subject);
         return lesson;
     }

@@ -20,8 +20,12 @@ public class LessonDto {
 
     @NotNull(message = "lessonName 은 필수 입력값입니다.")
     private String lessonName;
+
+    @NotNull(message = "lessonName 은 필수 입력값입니다.")
+    private String schoolClassificationName;
+
     @NotNull(message = "targetGradeCode 는 필수 입력값입니다.")
-    private String targetGradeCode;
+    private String targetGradeName;
     @NotNull(message = "subjectId 는 필수 입력값입니다.")
     private Long subjectId;
     @NotNull(message = "startDate 는 필수 입력값입니다.")
@@ -31,19 +35,21 @@ public class LessonDto {
     @NotNull(message = "lessonStatusCode 는 필수 입력값입니다.")
     private String lessonStatusCode;
 
-    public LessonDto(String lessonName, String targetGradeCode, Long subjectId, String startDate, String lessonStatusCode) {
+    public LessonDto(String lessonName, String schoolClassificationName, String targetGradeCode, Long subjectId, String startDate, String lessonStatusCode) {
         this.lessonName = lessonName;
-        this.targetGradeCode = targetGradeCode;
+        this.schoolClassificationName = schoolClassificationName;
+        this.targetGradeName = targetGradeCode;
         this.subjectId = subjectId;
         this.startDate = startDate;
         this.lessonStatusCode = lessonStatusCode;
     }
 
 
-    public LessonDto(Long id, String lessonName, String targetGradeCode, Long subjectId, String startDate, String lessonStatusCode) {
+    public LessonDto(Long id, String lessonName, String schoolClassificationName, String targetGradeName, Long subjectId, String startDate, String lessonStatusCode) {
         this.id = id;
         this.lessonName = lessonName;
-        this.targetGradeCode = targetGradeCode;
+        this.schoolClassificationName = schoolClassificationName;
+        this.targetGradeName = targetGradeName;
         this.subjectId = subjectId;
         this.startDate = startDate;
         this.lessonStatusCode = lessonStatusCode;
@@ -51,11 +57,11 @@ public class LessonDto {
 
 
     public Lesson toInsertEntity(Subject subject){
-        return Lesson.toInsertEntity(this.lessonName, this.targetGradeCode, subject, this.startDate, this.lessonStatusCode);
+        return Lesson.toInsertEntity(this.lessonName, this.schoolClassificationName, this.targetGradeName, subject, this.startDate, this.lessonStatusCode);
     }
 
 
     public Lesson toUpdateEntity(Subject subject) {
-        return Lesson.toUpdateEntity(this.id, this.lessonName, this.targetGradeCode, subject, this.startDate, this.lessonStatusCode);
+        return Lesson.toUpdateEntity(this.id, this.lessonName, this.targetGradeName, subject, this.startDate, this.lessonStatusCode);
     }
 }
