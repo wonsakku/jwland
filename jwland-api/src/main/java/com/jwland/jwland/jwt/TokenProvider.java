@@ -72,9 +72,9 @@ public class TokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-        List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get(JwtConstants.AUTHORITIES_KEY).toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        final List<String> auth = (List) claims.get(JwtConstants.AUTHORITIES_KEY);
+        List<SimpleGrantedAuthority> authorities = auth.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+
 
         User principal = new User(claims.getSubject(), "", authorities);
 
