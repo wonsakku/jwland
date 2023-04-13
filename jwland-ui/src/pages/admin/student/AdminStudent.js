@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Pagination from "../../../components/Pagination";
 import * as jwt from "../../../jwt";
 
 const AdminStudent = () => {
 
     const [accounts, setAccounts] = useState([]);
+    const [pageable, setPageable] = useState(null);
+    const [totalPages, setTotalPages] = useState(0);
     const [accountIds, setAccountIds] = useState([]);
     const [accountStatus, setAccountStatus] = useState("APPROVAL_REQUEST");
     const [accountName, setAccountName] = useState("");
@@ -13,9 +16,9 @@ const AdminStudent = () => {
         getAccounts();
     }, []);
 
-    const getAccounts = () => {
+    const getAccounts = (page = 0) => {
         const headers = jwt.authHeader();
-        let path = "/admin/accounts?";
+        let path = "/admin/accounts?page=" + page + "&";
 
         if (accountStatus !== "") {
             path += "accountStatus=" + accountStatus + "&";
@@ -25,14 +28,15 @@ const AdminStudent = () => {
             path += "name=" + accountName;
         }
 
-
-
         axios.get(path, {
             headers: headers
         })
             .then(res => {
                 const data = res.data.data;
+                console.log(data);
                 setAccounts(data.content);
+                setPageable(data.pageable);
+                setTotalPages(data.totalPages);
             });
     }
 
@@ -70,6 +74,10 @@ const AdminStudent = () => {
         });
     }
 
+    const onClickPageButton = (page) => {
+        getAccounts(page);
+    }
+
 
 
     return (
@@ -95,12 +103,12 @@ const AdminStudent = () => {
                 <div className="col-3">
                     <input className="form-control"
                         onChange={(e) => setAccountName(e.target.value)}
-                        onKeyUp={(e) => { e.key === "Enter" && getAccounts() }
+                        onKeyUp={(e) => { e.key === "Enter" && getAccounts(0) }
                         }
                         value={accountName}></input>
                 </div>
                 <div className="col-1 d-flex justify-content-end pl-0">
-                    <button className="btn btn-primary" style={{ width: "100%" }} onClick={getAccounts}>조회</button>
+                    <button className="btn btn-primary" style={{ width: "100%" }} onClick={(e) => getAccounts(0)}>조회</button>
                 </div>
             </div >
             <table className="table mt-5 text-center">
@@ -128,9 +136,25 @@ const AdminStudent = () => {
                             </tr>
                         )
                     })}
-
                 </tbody>
             </table>
+
+            <hr />
+            {accounts.length === 0 ?
+                <div>조회된 계정이 없습니다.</div>
+                :
+                <>
+                    {accounts.length > 1 && pageable !== null &&
+                        <Pagination
+                            pageNumber={pageable.pageNumber}
+                            totalPages={totalPages}
+                            onClick={onClickPageButton}
+                            limit={5}
+                        />
+                    }
+                </>
+            }
+
         </>
     );
 }
