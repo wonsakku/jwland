@@ -3,6 +3,7 @@ package com.jwland.jwland.entity.status;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor

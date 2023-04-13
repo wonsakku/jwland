@@ -4,12 +4,14 @@ import com.jwland.jwland.domain.account.dto.AccountStatusUpdateDto;
 import com.jwland.jwland.domain.account.dto.AccountsDto;
 import com.jwland.jwland.domain.account.repository.AccountRepository;
 import com.jwland.jwland.entity.Account;
+import com.jwland.jwland.entity.status.AccountStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -23,9 +25,9 @@ public class AdminAccountService {
 
 
     public Page<AccountsDto> findAccounts(Pageable pageable, String name, String accountStatus) {
-        final Page<Account> data = accountRepository.findAccountsByNameContaining(pageable, name);
-//        final Page<Account> data = accountRepository.findAll(pageable);
-        return data.map(AccountsDto::new);
+        AccountStatus _accountStatus = StringUtils.hasText(accountStatus) ? AccountStatus.findByName(accountStatus) : null;
+        Page<Account> result = accountRepository.findAccountsWithConditions(pageable, name, _accountStatus);
+        return result.map(AccountsDto::new);
     }
 
     @Transactional

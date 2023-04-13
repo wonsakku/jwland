@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface AccountRepository extends JpaRepository<Account, Long>, AccountQueryRepository{
     Optional<Account> findByLoginId(String name);
 
     @Query("SELECT a FROM Account a LEFT JOIN FETCH a.roles WHERE a.loginId = :loginId")
