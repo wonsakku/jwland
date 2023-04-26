@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import serverUrl from "../../../serverUrl";
 import { useHistory } from "react-router-dom";
 import AdminLessonTemplate from "../components/AdminLessonTemplate";
+import * as jwt from "../../../jwt";
+
 
 const AdminLessonEnroll = () => {
 
@@ -12,6 +14,7 @@ const AdminLessonEnroll = () => {
 
         e.preventDefault();
         const lessonName = document.querySelector("#lessonName").value;
+        const schoolClassification = document.querySelector("#schoolClassification").value;
         const targetGradeCode = document.querySelector("#targetGrade").value;
         const subjectId = document.querySelector("#subject").value;
         const lessonStatusCode = document.querySelector("#lessonStatus").value;
@@ -31,12 +34,20 @@ const AdminLessonEnroll = () => {
             return;
         }
 
-        axios.post(serverUrl + "/lessons", {
+        const jwtToken = jwt.authHeader();
+        console.log(jwtToken);
+        const requetBody = {
             lessonName: lessonName,
+            schoolClassification: schoolClassification,
             targetGradeCode: targetGradeCode,
             subjectId: subjectId,
             lessonStatusCode: lessonStatusCode,
             startDate: startDate
+        };
+        console.log(requetBody);
+
+        axios.post("/admin/lessons", requetBody, {
+            headers: jwt.authHeader()
         }).then(res => {
             alert("등록되었습니다.");
             history.push("/admin/lessons");

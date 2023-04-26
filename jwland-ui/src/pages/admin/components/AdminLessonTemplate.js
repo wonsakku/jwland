@@ -6,19 +6,30 @@ import propTypes from 'prop-types';
 const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => {
 
     const [targetGrades, setTargetGrades] = useState([]);
+    const [schoolClassifications, setSchoolClassifications] = useState([]);
     const [subjects, setSubjects] = useState([]);
     const [lessonStatus, setLessonStatus] = useState([]);
 
     useEffect(() => {
-        getTargetGrades();
+        // getTargetGrades();
+        getSchoolClassification();
         getSubjects();
         getLessonStatus();
     }, []);
 
-    const getTargetGrades = () => {
-        axios.get(serverUrl + "/common/target-grades")
+    const getSchoolClassification = () => {
+        axios.get("/common/school-classification")
+            .then(res => {
+                setSchoolClassifications(res.data.data);
+            })
+    }
+
+    const getTargetGrades = (e) => {
+        const schoolClassification = e.target.value
+        axios.get(serverUrl + `/common/target-grades?schoolClassification=${schoolClassification}`)
             .then(res => {
                 const grades = res.data.data;
+                console.log(grades);
                 setTargetGrades(grades);
             });
     }
@@ -61,6 +72,26 @@ const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => 
                         </div>
                         <div className="col-11">
                             <input className="form-control" name="lessonName" id="lessonName" defaultValue={lesson ? lesson.lessonName : ""} />
+                        </div>
+                    </div>
+
+                    <div className="row p-4  align-items-center">
+                        <div className="col-1 d-flex justify-content-end">
+                            <label>학교 분류</label>
+                        </div>
+                        <div className="col-11">
+                            <select className="form-select"
+                                id="schoolClassification"
+                                defaultValue={lesson ? lesson.targetGradeCode : ""}
+                                key={lesson ? lesson.targetGradeCode : ""}
+                                onChange={getTargetGrades}>
+                                <option value="" disabled>== 선택 ==</option>
+                                {schoolClassifications.map(schoolClassification => {
+                                    return (
+                                        <option value={schoolClassification.code} key={schoolClassification.code}>{schoolClassification.name}</option>
+                                    );
+                                })}
+                            </select>
                         </div>
                     </div>
 
