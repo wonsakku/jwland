@@ -9,12 +9,14 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(schema = Constant.SCHEMA_JWLAND)
+@Table(schema = Constant.SCHEMA_JWLAND,
+        uniqueConstraints = @UniqueConstraint(name = "account_lesson_enroll_status_unique",
+        columnNames = {"account_id", "lesson_id"}))
 @Entity
 public class AccountLessonEnrollStatus extends BaseEntity{
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "account_class_eroll_status_id")
+    @Column(name = "account_lesson_enroll_status_id")
     private Long id;
 
     @ManyToOne
@@ -28,4 +30,9 @@ public class AccountLessonEnrollStatus extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private EnrollStatus enrollStatus;
 
+    public AccountLessonEnrollStatus(Account account, Lesson lesson, EnrollStatus enrollStatus) {
+        this.account = account;
+        this.lesson = lesson;
+        this.enrollStatus = enrollStatus;
+    }
 }

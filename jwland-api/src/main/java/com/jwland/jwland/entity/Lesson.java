@@ -92,4 +92,8 @@ public class Lesson extends BaseEntity {
     public boolean isAfterOpen() {
         return lessonStatus.isAfterOpen();
     }
+
+    public boolean isClosed() {
+        return false;
+    }
 }

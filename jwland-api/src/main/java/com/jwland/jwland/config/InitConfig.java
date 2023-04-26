@@ -84,8 +84,18 @@ public class InitConfig {
                 String gradeName = gradeNames[i % gradeNames.length];
                 final String password = "user" + i;
                 final AccountDto accountDto1 = new AccountDto("user" + i, "user" + i, password, school.getId(), gradeName);
+
                 final String encode = passwordEncoder.encode(password);
-                final Account account1 = accountDto1.toInsertEntity(encode, school);
+
+                AccountStatus accountStatus = null;
+
+                if(i % 2 == 0){
+                    accountStatus = AccountStatus.APPROVED;
+                }else {
+                    accountStatus = AccountStatus.APPROVAL_REQUEST;
+                }
+
+                final Account account1 = accountDto1.toInsertEntity(encode, accountStatus, school);
 
                 em.persist(account1);
 

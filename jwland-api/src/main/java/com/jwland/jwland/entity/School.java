@@ -18,6 +18,7 @@ public class School extends BaseEntity{
     private Long id;
 
     @Column(nullable = false, name = "school_classification")
+    @Enumerated(EnumType.STRING)
     private SchoolClassification classification;
 
     @Column(nullable = false, name = "school_name")

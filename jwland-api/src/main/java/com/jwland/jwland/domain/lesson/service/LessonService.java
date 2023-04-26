@@ -34,12 +34,6 @@ public class LessonService {
                 ;
     }
 
-    public LessonDetailDto getLessonDetail(Long lessonId) {
-        Lesson lesson = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 lessonId 입니다.."));
-
-        return new LessonDetailDto(lesson);
-    }
 
 
 

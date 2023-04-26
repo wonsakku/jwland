@@ -2,6 +2,7 @@ package com.jwland.jwland.domain.common;
 
 import com.jwland.jwland.dto.DefaultResponseDto;
 import com.jwland.jwland.dto.EnumDto;
+import com.jwland.jwland.entity.status.AccountStatus;
 import com.jwland.jwland.entity.status.Grade;
 import com.jwland.jwland.entity.status.LessonStatus;
 import com.jwland.jwland.entity.status.SchoolClassification;
@@ -65,6 +66,15 @@ public class CommonController {
     @GetMapping("/schools")
     public ResponseEntity<DefaultResponseDto> getSchools(){
         List<EnumDto> results = commonService.getSchools();
+
+        return ResponseEntity.ok( new DefaultResponseDto( HttpStatus.OK, results ) );
+    }
+
+    @GetMapping("/account-status")
+    public ResponseEntity<DefaultResponseDto> getAccountStatus(){
+        final List<EnumDto> results = Stream.of(AccountStatus.values())
+                .map(value -> new EnumDto(value.name(), value.getStatus()))
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok( new DefaultResponseDto( HttpStatus.OK, results ) );
     }

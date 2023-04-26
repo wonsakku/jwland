@@ -37,13 +37,6 @@ public class LessonController {
     }
 
 
-    @GetMapping("/{lessonId}")
-    public ResponseEntity<DefaultResponseDto> getLessonDetail(@PathVariable Long lessonId){
-        LessonDetailDto lessonDetail =  lessonService.getLessonDetail(lessonId);
-        return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK, lessonDetail) );
-    }
-
-
 
 
 

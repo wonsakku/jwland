@@ -22,4 +22,10 @@ public enum LessonStatus {
     public boolean isAfterOpen() {
         return this != BEFORE_OPEN;
     }
+
+    public boolean isClosed(){
+        return this == COMPLETED || this == SHUTDOWN;
+    }
 }
+
+
