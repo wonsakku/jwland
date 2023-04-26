@@ -35,18 +35,15 @@ const AdminLessonEnroll = () => {
         }
 
         const jwtToken = jwt.authHeader();
-        console.log(jwtToken);
-        const requetBody = {
+
+        axios.post("/admin/lessons", {
             lessonName: lessonName,
             schoolClassification: schoolClassification,
             targetGradeCode: targetGradeCode,
             subjectId: subjectId,
             lessonStatusCode: lessonStatusCode,
             startDate: startDate
-        };
-        console.log(requetBody);
-
-        axios.post("/admin/lessons", requetBody, {
+        }, {
             headers: jwt.authHeader()
         }).then(res => {
             alert("등록되었습니다.");
