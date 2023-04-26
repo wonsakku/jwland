@@ -8,7 +8,7 @@ public class ErrorUtil {
     public static void validate(Errors error){
 
         if(error.hasErrors()){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(error.getFieldError().getDefaultMessage());
         }
     }
 }
