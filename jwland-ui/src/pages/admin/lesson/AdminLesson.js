@@ -16,6 +16,7 @@ const AdminLesson = () => {
         axios.get(serverUrl + "/lessons")
             .then(res => {
                 const data = res.data;
+                console.log(data);
                 setLessons(data.data);
             });
     }
@@ -38,7 +39,12 @@ const AdminLesson = () => {
                         {lessons.map(lesson => {
                             return (
                                 <AdminPageCard title={lesson.lessonName} path={`/admin/lessons/${lesson.id}`} key={lesson.id}>
-                                    <button type="button" className="fw-bold btn btn-outline-primary">학생관리</button>
+                                    <Link
+                                        type="button"
+                                        className="fw-bold btn btn-outline-primary"
+                                        to={`/admin/lessons/${lesson.id}/students?lessonName=${lesson.lessonName}&subjectName=${lesson.subjectName}`}>
+                                        학생관리
+                                    </Link>
                                     <button type="button" className="fw-bold btn btn-outline-danger">출결관리</button>
                                 </AdminPageCard>
                             );

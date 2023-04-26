@@ -29,7 +29,6 @@ const AdminLessonTemplate = ({ clickEvent, editPage, lesson, deleteLesson }) => 
         axios.get(serverUrl + `/common/target-grades?schoolClassification=${schoolClassification}`)
             .then(res => {
                 const grades = res.data.data;
-                console.log(grades);
                 setTargetGrades(grades);
             });
     }
