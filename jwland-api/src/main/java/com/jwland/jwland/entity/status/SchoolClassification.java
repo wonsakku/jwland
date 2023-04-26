@@ -3,6 +3,8 @@ package com.jwland.jwland.entity.status;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -14,6 +16,7 @@ public enum SchoolClassification {
     HIGH("고등학교", "Y"),
     ADMIN("재원랜드", "N")
     ;
+    public static final String Y = "Y";
     private final String value;
     private final String showYn;
 
@@ -24,4 +27,12 @@ public enum SchoolClassification {
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 학교 분류가 없습니다."))
                 ;
     }
+
+    public static List<SchoolClassification> getVisibleSchools(){
+        return Stream.of(values())
+                .filter(value -> value.showYn.equalsIgnoreCase(Y))
+                .collect(Collectors.toList());
+    }
+
+
 }

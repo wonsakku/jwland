@@ -44,27 +44,8 @@ public class LessonController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<DefaultResponseDto> enrollLesson(@RequestBody @Validated LessonDto lessonDto, Errors errors){
-        ErrorUtil.validate(errors);
-        lessonService.enrollLesson(lessonDto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body( new DefaultResponseDto(HttpStatus.CREATED) );
-    }
 
-    @PutMapping
-    public ResponseEntity<DefaultResponseDto> updateLesson(@RequestBody @Validated LessonDto lessonDto, Errors errors){
-        ErrorUtil.validate(errors);
-        lessonService.updateLesson(lessonDto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body( new DefaultResponseDto(HttpStatus.OK) );
-    }
 
-    @DeleteMapping("/{lessonId}")
-    public ResponseEntity<DefaultResponseDto> deleteLesson(@PathVariable Long lessonId){
-        lessonService.deleteLesson(lessonId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
 
     @GetMapping("/subjects")
     public ResponseEntity<DefaultResponseDto> getLessonSubjects(){

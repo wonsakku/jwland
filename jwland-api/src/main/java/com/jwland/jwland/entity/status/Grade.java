@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.jwland.jwland.entity.status.SchoolClassification.*;
@@ -23,7 +24,7 @@ public enum Grade {
     ;
 
     private final String grade;
-    private final List<SchoolClassification> involve;
+    private final List<SchoolClassification> involves;
 
     public static Grade findByNumber(String gradeNumber) {
         return Stream.of(values())
@@ -33,4 +34,9 @@ public enum Grade {
                 ;
     }
 
+    public static List<Grade> findBySchoolClassification(String schoolClassification) {
+        return Stream.of(values())
+                .filter(value -> value.involves.contains(SchoolClassification.findByName(schoolClassification)))
+                .collect(Collectors.toList());
+    }
 }

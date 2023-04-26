@@ -1,14 +1,13 @@
 package com.jwland.jwland.domain.lesson;
 
 import com.jwland.jwland.domain.lesson.dto.LessonDto;
+import com.jwland.jwland.domain.lesson.service.AdminLessonService;
 import com.jwland.jwland.domain.subject.dto.SubjectDto;
 import com.jwland.jwland.entity.Lesson;
 import com.jwland.jwland.entity.Subject;
 import com.jwland.jwland.entity.status.Grade;
 import com.jwland.jwland.entity.status.LessonStatus;
 import com.jwland.jwland.domain.lesson.repository.LessonRepository;
-import com.jwland.jwland.domain.subject.repository.SubjectRepository;
-import com.jwland.jwland.domain.lesson.service.LessonService;
 import com.jwland.jwland.entity.status.SchoolClassification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class LessonServiceTest {
 
     @Autowired
-    LessonService lessonService;
+    AdminLessonService adminLessonService;
 
     @Autowired
     LessonRepository lessonRepository;
@@ -54,7 +53,7 @@ class LessonServiceTest {
         LessonDto lessonDto = new LessonDto("나의 첫 강의", SchoolClassification.HIGH.name(), Grade.TWO.name(), subject.getId(), "20230401", LessonStatus.BEFORE_OPEN.name());
 
         // when
-        Long lessonId = lessonService.enrollLesson(lessonDto);
+        Long lessonId = adminLessonService.enrollLesson(lessonDto);
         Lesson enrolledLesson = lessonRepository.findById(lessonId).orElseThrow();
 
         // then
@@ -63,7 +62,7 @@ class LessonServiceTest {
         assertThat(subject.getName()).isEqualTo(enrolledLesson.getSubjectName());
         assertThat(lessonDto.getLessonStatusCode()).isEqualTo(enrolledLesson.getLessonStatus().name());
         assertThat(lessonDto.getStartDate()).isEqualTo(enrolledLesson.getStartDate());
-        assertThat(lessonDto.getTargetGradeName()).isEqualTo(enrolledLesson.getTargetGrade().name());
+        assertThat(lessonDto.getTargetGradeCode()).isEqualTo(enrolledLesson.getTargetGrade().name());
     }
 
     @Test
@@ -86,11 +85,11 @@ class LessonServiceTest {
                 LessonStatus.OPEN.name());
 
         // when
-        Long updatedId = lessonService.updateLesson(updatingDto);
+        Long updatedId = adminLessonService.updateLesson(updatingDto);
         Lesson updated = lessonRepository.findById(updatedId).orElseThrow();
 
         assertThat(updatingDto.getLessonName()).isEqualTo(updated.getLessonName());
-        assertThat(updatingDto.getTargetGradeName()).isEqualTo(updated.getTargetGrade().name());
+        assertThat(updatingDto.getTargetGradeCode()).isEqualTo(updated.getTargetGrade().name());
         assertThat(updatingDto.getSubjectId()).isEqualTo(updated.getSubject().getId());
         assertThat(updatingSubject.getName()).isEqualTo(updated.getSubjectName()); // transaction 이 없을 경우 lazyLoading 으로 인한 초기화 에러 발생?
         assertThat(updatingSubject.getName()).isEqualTo(updated.getSubject().getName());
@@ -106,7 +105,7 @@ class LessonServiceTest {
         Lesson saved = lessonRepository.save(lesson);
 
         // when
-        lessonService.deleteLesson(saved.getId());
+        adminLessonService.deleteLesson(saved.getId());
 
         // then
         assertThat(lessonRepository.findById(saved.getId()).isEmpty()).isTrue();
@@ -120,7 +119,7 @@ class LessonServiceTest {
         Lesson saved = lessonRepository.save(lesson);
 
         assertThatThrownBy(() -> {
-            lessonService.deleteLesson(saved.getId());
+            adminLessonService.deleteLesson(saved.getId());
         }).isInstanceOf(IllegalStateException.class)
                 .hasMessage("수업 삭제는 개강 전에만 가능합니다.");
     }

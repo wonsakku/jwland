@@ -4,11 +4,13 @@ import com.jwland.jwland.dto.DefaultResponseDto;
 import com.jwland.jwland.dto.EnumDto;
 import com.jwland.jwland.entity.status.Grade;
 import com.jwland.jwland.entity.status.LessonStatus;
+import com.jwland.jwland.entity.status.SchoolClassification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,13 +25,29 @@ public class CommonController {
     private final CommonService commonService;
 
 
+    @GetMapping("/school-classification")
+    public ResponseEntity<DefaultResponseDto<List>> getSchoolClassification(){
+        final List<EnumDto> result = SchoolClassification.getVisibleSchools()
+                .stream()
+                .map(code -> EnumDto.builder()
+                        .code(code.name())
+                        .name(code.getValue())
+                        .build()
+                ).collect(Collectors.toList());
+
+        return ResponseEntity.ok( new DefaultResponseDto<>(HttpStatus.OK, result) );
+
+    }
+
     @GetMapping("/target-grades")
-    public ResponseEntity<DefaultResponseDto> getTargetGrades(){
-        List<EnumDto> data = Stream.of(Grade.values()).map(value -> EnumDto.builder()
-                        .code(value.name())
-                        .name(value.getGrade())
-                        .build())
-                .collect(Collectors.toList());
+    public ResponseEntity<DefaultResponseDto> getTargetGrades(@RequestParam(name = "schoolClassification") String schoolClassification){
+        List<EnumDto> data = Grade.findBySchoolClassification(schoolClassification)
+                .stream()
+                .map(value -> EnumDto.builder()
+                .code(value.name())
+                .name(value.getGrade())
+                .build()
+                ).collect(Collectors.toList());
 
         return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK, data) );
     }
