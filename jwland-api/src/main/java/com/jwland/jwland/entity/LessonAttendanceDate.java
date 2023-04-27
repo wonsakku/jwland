@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(schema = Constant.SCHEMA_JWLAND,
         uniqueConstraints = @UniqueConstraint(
-                name = "lesson_attendance_unique",
+                name = "lesson_attendance_date_unique",
                 columnNames = {"lesson_id", "start_date"}
 ))
 @Entity
@@ -27,5 +27,9 @@ public class LessonAttendanceDate extends BaseEntity{
     @Column(nullable = false, length = 8, name = "start_date")
     private String startDate;
 
+    public LessonAttendanceDate(Lesson lesson, String startDate){
+        this.lesson = lesson;
+        this.startDate = startDate;
+    }
 
 }

@@ -1,9 +1,6 @@
 package com.jwland.jwland.domain.lesson.controller;
 
-import com.jwland.jwland.domain.lesson.dto.AccountIdsEnrollingLessonDto;
-import com.jwland.jwland.domain.lesson.dto.AccountLessonEnrollStatusDto;
-import com.jwland.jwland.domain.lesson.dto.LessonDetailDto;
-import com.jwland.jwland.domain.lesson.dto.LessonDto;
+import com.jwland.jwland.domain.lesson.dto.*;
 import com.jwland.jwland.domain.lesson.service.AdminLessonService;
 import com.jwland.jwland.dto.DefaultResponseDto;
 import com.jwland.jwland.util.ErrorUtil;
@@ -69,7 +66,7 @@ public class AdminLessonController {
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
             ){
 
-        Page<AccountLessonEnrollStatusDto> results = adminLessonService.getUnenrolledAccounts(lessonId, schoolClassification, grade, name, pageable);
+        Page<AccountLessonDto> results = adminLessonService.getUnenrolledAccounts(lessonId, schoolClassification, grade, name, pageable);
 
         return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK, results) );
     }
@@ -86,5 +83,27 @@ public class AdminLessonController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body( new DefaultResponseDto(HttpStatus.OK) );
     }
+
+    @GetMapping("/{lessonId}/enrolled-accounts")
+    public ResponseEntity<DefaultResponseDto> getEnrolledAccounts(@PathVariable("lessonId") Long lessonId){
+        List<AccountLessonDto> results = adminLessonService.getEnrolledAccounts(lessonId);
+        return ResponseEntity.ok( new DefaultResponseDto( HttpStatus.OK, results ) );
+    }
+
+    @PostMapping("/{lessonId}/attendance")
+    public ResponseEntity<DefaultResponseDto> enrollAttendance(@PathVariable("lessonId") Long lessonId,
+                                                               @RequestBody @Validated LessonAttendanceDto lessonAttendanceDto,
+                                                               Errors errors){
+
+        ErrorUtil.validate(errors);
+        adminLessonService.enrollAttendance(lessonId, lessonAttendanceDto);
+
+
+        return ResponseEntity.ok( new DefaultResponseDto( HttpStatus.OK ) );
+    }
+
+
+
+
 }
 

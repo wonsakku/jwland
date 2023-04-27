@@ -13,7 +13,8 @@ public class ExceptionHandleController {
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
     public ResponseEntity<DefaultResponseDto> illegalArgumentAndStateExceptionHandler(RuntimeException e){
-        log.error("error message : {}", e.getMessage());
+//        log.error("error message : {}", e.getMessage());
+        e.printStackTrace();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body( new DefaultResponseDto(HttpStatus.BAD_REQUEST, e.getMessage()) );
     }

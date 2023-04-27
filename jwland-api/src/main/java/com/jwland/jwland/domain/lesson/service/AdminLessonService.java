@@ -1,17 +1,15 @@
 package com.jwland.jwland.domain.lesson.service;
 
+import com.jwland.jwland.constant.Time;
 import com.jwland.jwland.domain.account.repository.AccountRepository;
-import com.jwland.jwland.domain.lesson.dto.AccountIdsEnrollingLessonDto;
-import com.jwland.jwland.domain.lesson.dto.AccountLessonEnrollStatusDto;
-import com.jwland.jwland.domain.lesson.dto.LessonDetailDto;
-import com.jwland.jwland.domain.lesson.dto.LessonDto;
+import com.jwland.jwland.domain.lesson.dto.*;
 import com.jwland.jwland.domain.lesson.repository.AccountLessonEnrollStatusRepository;
+import com.jwland.jwland.domain.lesson.repository.LessonAttendanceDateRepository;
+import com.jwland.jwland.domain.lesson.repository.LessonAttendanceRepository;
 import com.jwland.jwland.domain.lesson.repository.LessonRepository;
 import com.jwland.jwland.domain.subject.repository.SubjectRepository;
-import com.jwland.jwland.entity.Account;
-import com.jwland.jwland.entity.AccountLessonEnrollStatus;
-import com.jwland.jwland.entity.Lesson;
-import com.jwland.jwland.entity.Subject;
+import com.jwland.jwland.entity.*;
+import com.jwland.jwland.entity.status.AttendanceStatus;
 import com.jwland.jwland.entity.status.EnrollStatus;
 import com.jwland.jwland.entity.status.Grade;
 import com.jwland.jwland.entity.status.SchoolClassification;
@@ -22,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,15 +30,17 @@ import java.util.stream.Collectors;
 @Service
 public class AdminLessonService {
 
+    private final LessonCommonService lessonCommonService;
     private final LessonRepository lessonRepository;
     private final SubjectRepository subjectRepository;
     private final AccountRepository accountRepository;
+    private final LessonAttendanceRepository lessonAttendanceRepository;
+    private final LessonAttendanceDateRepository lessonAttendanceDateRepository;
     private final AccountLessonEnrollStatusRepository accountLessonEnrollStatusRepository;
 
     @Transactional
     public Long enrollLesson(LessonDto lessonDto) {
-        Long subjectId = lessonDto.getSubjectId();
-        Subject subject = subjectRepository.findById(subjectId)
+        Subject subject = subjectRepository.findById(lessonDto.getSubjectId())
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 subject 가 없습니다."));
 
         Lesson lesson = lessonDto.toInsertEntity(subject);
@@ -49,13 +51,11 @@ public class AdminLessonService {
 
     @Transactional
     public Long updateLesson(LessonDto lessonDto) {
-        Long subjectId = lessonDto.getSubjectId();
-        Subject subject = subjectRepository.findById(subjectId)
+        Subject subject = subjectRepository.findById(lessonDto.getSubjectId())
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 subject 가 존재하지 않습니다."));
 
         Lesson updating = lessonDto.toUpdateEntity(subject);
-        Lesson target = lessonRepository.findById(updating.getId())
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 lesson 이 존재하지 않습니다."));
+        Lesson target = lessonCommonService.getLesson(updating.getId());
 
         target.changeData(updating);
 
@@ -63,17 +63,14 @@ public class AdminLessonService {
     }
 
     public LessonDetailDto getLessonDetail(Long lessonId) {
-        Lesson lesson = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 lessonId 입니다.."));
-
+        Lesson lesson = lessonCommonService.getLesson(lessonId);
         return new LessonDetailDto(lesson);
     }
 
 
     @Transactional
     public void deleteLesson(Long lessonId) {
-        Lesson targetLesson = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 lessonId 입니다."));
+        Lesson targetLesson = lessonCommonService.getLesson(lessonId);
 
         if(targetLesson.isAfterOpen()){
             throw new IllegalStateException("수업 삭제는 개강 전에만 가능합니다.");
@@ -82,7 +79,7 @@ public class AdminLessonService {
         lessonRepository.delete(targetLesson);
     }
 
-    public Page<AccountLessonEnrollStatusDto> getUnenrolledAccounts(Long lessonId, String schoolClassification, String grade, String name, Pageable pageable) {
+    public Page<AccountLessonDto> getUnenrolledAccounts(Long lessonId, String schoolClassification, String grade, String name, Pageable pageable) {
         final Page<Account> unenrolledAccounts = accountRepository.findAccountsNotInLesson(
                 lessonId,
                 SchoolClassification.findByName(schoolClassification),
@@ -91,17 +88,13 @@ public class AdminLessonService {
                 pageable
         );
 
-        return unenrolledAccounts.map(AccountLessonEnrollStatusDto::new);
+        return unenrolledAccounts.map(AccountLessonDto::new);
     }
 
     @Transactional
     public void enrollAccountsToLesson(Long lessonId, AccountIdsEnrollingLessonDto accountIdsEnrollingLessonDto) {
-        final Lesson lesson = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 lesson입니다."));
 
-        if(lesson.isClosed()){
-            throw new IllegalArgumentException("종료된 lesson 입니다.");
-        }
+        final Lesson lesson = lessonCommonService.getUnclosedLesson(lessonId);
 
         final List<Account> accounts = accountRepository.findAllById(accountIdsEnrollingLessonDto.getAccountIds());
 
@@ -114,4 +107,36 @@ public class AdminLessonService {
         }
 
     }
+
+    public List<AccountLessonDto> getEnrolledAccounts(Long lessonId) {
+        List<AccountLessonEnrollStatus> accountLessonEnrollStatus = accountLessonEnrollStatusRepository.findByLessonId(lessonId);
+        final List<AccountLessonDto> results = accountLessonEnrollStatus.stream()
+                .map(status -> new AccountLessonDto(status.getAccount()))
+                .collect(Collectors.toList());
+        return results;
+    }
+
+    @Transactional
+    public void enrollAttendance(Long lessonId, LessonAttendanceDto lessonAttendanceDto) {
+
+        final Lesson lesson = lessonCommonService.getUnclosedLesson(lessonId);
+        final String todayDateFormat = new SimpleDateFormat(Time.Pattern.YYYYMMDD).format(new Date());
+
+        lessonAttendanceDateRepository.findTop1ByLessonAndStartDate(lesson, todayDateFormat)
+                .ifPresent(entity -> {throw new IllegalArgumentException("오늘 날짜의 출석체크는 이미 진행했습니다.\n출석 변경은 출석 수정 페이지에서 진행해주세요");});
+
+        final LessonAttendanceDate lessonAttendanceDate = lessonAttendanceDateRepository.save(new LessonAttendanceDate(lesson, todayDateFormat));
+
+        final List<Account> enrolledAccounts = accountRepository.findAllById(lessonAttendanceDto.getAccountIds());
+
+        for (Account enrolledAccount : enrolledAccounts) {
+            final String attendanceStatus = lessonAttendanceDto.getAttendanceStatusByAccountId(enrolledAccount.getId());
+            final LessonAttendance lessonAttendance = new LessonAttendance(enrolledAccount,
+                    lessonAttendanceDate,
+                    AttendanceStatus.findByName(attendanceStatus));
+            lessonAttendanceRepository.save(lessonAttendance);
+        }
+    }
+
+
 }

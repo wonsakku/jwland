@@ -22,7 +22,7 @@ public class InitConfig {
 
     private final InitData initData;
 
-    @PostConstruct
+//    @PostConstruct
     public void init(){
         initData.init();
     }
@@ -87,21 +87,15 @@ public class InitConfig {
 
                 final String encode = passwordEncoder.encode(password);
 
-                AccountStatus accountStatus = null;
-
-                if(i % 2 == 0){
-                    accountStatus = AccountStatus.APPROVED;
-                }else {
-                    accountStatus = AccountStatus.APPROVAL_REQUEST;
-                }
-
-                final Account account1 = accountDto1.toInsertEntity(encode, accountStatus, school);
+                final Account account1 = accountDto1.toInsertEntity(encode, AccountStatus.APPROVED, school);
 
                 em.persist(account1);
 
                 final AccountRole accountRole = new AccountRole(account1, RoleType.ROLE_USER);
                 em.persist(accountRole);
             }
+
+
 
         }
     }

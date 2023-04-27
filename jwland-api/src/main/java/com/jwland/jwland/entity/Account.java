@@ -63,6 +63,10 @@ public class Account extends BaseEntity {
         this.school = school;
     }
 
+    public Account(Long id){
+        this.id = id;
+    }
+
     public static Account insertEntity(String loginId, String name, String password, String gradeNumber, AccountStatus accountStatus, School school){
         return new Account(loginId, name, password, Grade.findByNumber(gradeNumber), accountStatus, school);
     }

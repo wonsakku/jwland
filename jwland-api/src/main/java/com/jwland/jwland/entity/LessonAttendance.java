@@ -32,4 +32,12 @@ public class LessonAttendance extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private AttendanceStatus attendanceStatus;
+
+    public LessonAttendance(Account account, LessonAttendanceDate lessonAttendanceDate, AttendanceStatus attendanceStatus){
+        this.account = account;
+        this.lessonAttendanceDate = lessonAttendanceDate;
+        this.attendanceStatus = attendanceStatus;
+    }
+
+
 }
