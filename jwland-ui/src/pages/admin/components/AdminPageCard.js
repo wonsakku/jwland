@@ -19,8 +19,8 @@ const AdminPageCard = ({ path, title, children }) => {
                     </svg>
                 </Link>
                 <div className="card-body">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div className="btn-group">
+                    <div className="d-flex justify-content-end align-items-center">
+                        <div className="btn-group me-3">
                             {children}
                         </div>
                         <small className="text-body-secondary"></small>

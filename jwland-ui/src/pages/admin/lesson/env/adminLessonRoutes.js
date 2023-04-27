@@ -1,3 +1,4 @@
+import AdminAttendanceManage from "../AdminAttendanceManage";
 import AdminLessonEdit from "../AdminLessonEdit";
 import AdminLessonEnroll from "../AdminLessonEnroll";
 import AdminLessonStudentManage from "../AdminLessonStudentManage";
@@ -15,6 +16,10 @@ const adminLessonRoutes = [
     {
         path: "/admin/lessons/:lessonId/students",
         component: AdminLessonStudentManage
+    },
+    {
+        path: "/admin/lessons/:lessonId/attendance",
+        component: AdminAttendanceManage
     }
 
 ]

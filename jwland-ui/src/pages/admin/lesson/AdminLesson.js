@@ -34,18 +34,23 @@ const AdminLesson = () => {
             </div>
             <div className="album py-5 bg-body-tertiary">
                 <div className="container">
-                    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mx-auto">
 
                         {lessons.map(lesson => {
                             return (
-                                <AdminPageCard title={lesson.lessonName} path={`/admin/lessons/${lesson.id}`} key={lesson.id}>
+                                <AdminPageCard title={`${lesson.lessonName}(${lesson.subjectName})`} path={`/admin/lessons/${lesson.id}`} key={lesson.id}>
                                     <Link
                                         type="button"
                                         className="fw-bold btn btn-outline-primary"
                                         to={`/admin/lessons/${lesson.id}/students?lessonName=${lesson.lessonName}&subjectName=${lesson.subjectName}`}>
                                         학생관리
                                     </Link>
-                                    <button type="button" className="fw-bold btn btn-outline-danger">출결관리</button>
+                                    <Link
+                                        type="button"
+                                        className="fw-bold btn btn-outline-danger"
+                                        to={`/admin/lessons/${lesson.id}/attendance?lessonName=${lesson.lessonName}&subjectName=${lesson.subjectName}`}>
+                                        출결관리
+                                    </Link>
                                 </AdminPageCard>
                             );
                         })}
