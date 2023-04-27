@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(schema = Constant.SCHEMA_JWLAND,
         uniqueConstraints = @UniqueConstraint(
         name = "lesson_attendance_unique",
-        columnNames = {"account_id", "lesson_id", "lesson_date"}
+        columnNames = {"account_id", "lesson_attendance_date_id"}
 ))
 @Entity
 public class LessonAttendance extends BaseEntity{
@@ -27,11 +27,8 @@ public class LessonAttendance extends BaseEntity{
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
-
-    @Column(length = 8, name = "lesson_date")
-    private String lessonDate;
+    @JoinColumn(name = "lesson_attendance_date_id")
+    private LessonAttendanceDate lessonAttendanceDate;
 
     @Enumerated(EnumType.STRING)
     private AttendanceStatus attendanceStatus;

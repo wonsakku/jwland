@@ -1,7 +1,6 @@
 package com.jwland.jwland.domain.lesson.dto;
 
 import com.jwland.jwland.entity.Account;
-import com.jwland.jwland.entity.AccountLessonEnrollStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,14 +8,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AccountLessonEnrollStatusDto {
+public class AccountLessonDto {
 
     private Long accountId;
     private String name;
     private String schoolName;
     private String grade;
 
-    public AccountLessonEnrollStatusDto(Account account){
+    public AccountLessonDto(Account account){
         this.accountId = account.getId();
         this.name = account.getName();
         this.schoolName = account.getSchoolName();
