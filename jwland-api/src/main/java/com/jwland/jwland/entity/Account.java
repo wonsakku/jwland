@@ -2,10 +2,7 @@ package com.jwland.jwland.entity;
 
 import com.jwland.jwland.entity.status.AccountStatus;
 import com.jwland.jwland.entity.status.Grade;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,6 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(schema = Constant.SCHEMA_JWLAND, name = "account")
 @Entity
+@EqualsAndHashCode(of = {"id"})
 public class Account extends BaseEntity {
 
     private final static String Y = "Y";

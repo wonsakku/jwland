@@ -94,15 +94,32 @@ public class AdminLessonController {
     public ResponseEntity<DefaultResponseDto> enrollAttendance(@PathVariable("lessonId") Long lessonId,
                                                                @RequestBody @Validated LessonAttendanceDto lessonAttendanceDto,
                                                                Errors errors){
-
         ErrorUtil.validate(errors);
         adminLessonService.enrollAttendance(lessonId, lessonAttendanceDto);
-
 
         return ResponseEntity.ok( new DefaultResponseDto( HttpStatus.OK ) );
     }
 
+    @GetMapping("/{lessonId}/attendance/date")
+    public ResponseEntity<DefaultResponseDto> getAttendanceDate(@PathVariable("lessonId") Long lessonId){
+        final List<LessonAttendanceDateDto> results = adminLessonService.getAttendanceDate(lessonId);
+        return ResponseEntity.ok( new DefaultResponseDto( HttpStatus.OK, results ) );
+    }
 
+    @GetMapping("/date/{lessonAttendanceDateId}/attendance")
+    public ResponseEntity<DefaultResponseDto> getLessonAttendanceDate(@PathVariable("lessonAttendanceDateId") Long lessonAttendanceDateId){
+        final List<LessonAttendanceInfoDto> results = adminLessonService.getLessonAttendanceDate(lessonAttendanceDateId);
+        return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK, results) );
+    }
+
+    @PutMapping("/date/{lessonAttendanceDateId}/attendance")
+    public ResponseEntity<DefaultResponseDto> updateLessonAttendance(@PathVariable("lessonAttendanceDateId") Long lessonAttendanceDateId,
+                                                                     @RequestBody @Validated LessonAttendanceDto lessonAttendanceDto,
+                                                                     Errors errors){
+        ErrorUtil.validate(errors);
+        adminLessonService.updateLessonAttendance(lessonAttendanceDateId, lessonAttendanceDto);
+        return ResponseEntity.ok( new DefaultResponseDto( HttpStatus.OK ) );
+    }
 
 
 }

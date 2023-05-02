@@ -4,6 +4,7 @@ import com.jwland.jwland.entity.status.AttendanceStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -37,6 +38,12 @@ public class LessonAttendance extends BaseEntity{
         this.account = account;
         this.lessonAttendanceDate = lessonAttendanceDate;
         this.attendanceStatus = attendanceStatus;
+    }
+
+    public void update(LessonAttendance updating){
+        this.account = updating.getAccount();
+        this.lessonAttendanceDate = updating.getLessonAttendanceDate();
+        this.attendanceStatus = updating.getAttendanceStatus();
     }
 
 
