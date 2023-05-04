@@ -85,5 +85,15 @@ public class CommonController {
         return ResponseEntity.ok( new DefaultResponseDto( HttpStatus.OK, results ) );
     }
 
+    @GetMapping("/exams/organization-types")
+    public ResponseEntity<DefaultResponseDto> getExamOrganizationTypes(){
+        final List<EnumDto> results = Stream.of(ExamOrganizationType.values())
+                .filter(value -> value.activated())
+                .map(value -> new EnumDto(value.name(), value.getType()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok( new DefaultResponseDto( HttpStatus.OK, results ) );
+    }
+
 
 }

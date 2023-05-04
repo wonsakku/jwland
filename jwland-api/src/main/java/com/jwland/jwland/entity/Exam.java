@@ -22,7 +22,8 @@ public class Exam extends BaseEntity {
     @Column(nullable = false, name = "month")
     private Integer month;
 
-    @Column(nullable = false, name = "organization")
-    private String organization;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "organization_id")
+    private ExamOrganization organization;
 
 }
