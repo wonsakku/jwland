@@ -161,13 +161,14 @@ public class AdminLessonService {
 
         final LessonAttendanceDate lessonAttendanceDate = lessonAttendanceDateRepository.findById(lessonAttendanceDateId)
                 .orElseThrow(() -> new IllegalArgumentException("선택한 날짜의 출석 데이터가 존재하지 않습니다."));
-        final List<Account> enrolledAccounts = accountRepository.findAllById(lessonAttendanceDto.getAccountIds());
-        final Accounts accounts = new Accounts(enrolledAccounts);
 
         final List<LessonAttendance> enrolledLessonAttendances = lessonAttendanceRepository.findByLessonAttendanceDate(lessonAttendanceDate);
 
+        final List<Account> enrolledAccounts = accountRepository.findAllById(lessonAttendanceDto.getAccountIds());
+        final Accounts accounts = new Accounts(enrolledAccounts);
+
         for (LessonAttendance enrolledLessonAttendance : enrolledLessonAttendances) {
-            final Account enrolledAccount = accounts.findByAccountId(enrolledLessonAttendance.getAccount());
+            final Account enrolledAccount = accounts.findSameAccount(enrolledLessonAttendance.getAccount());
             final String attendanceStatus = lessonAttendanceDto.getAttendanceStatusByAccountId(enrolledAccount.getId());
             final LessonAttendance updating = new LessonAttendance(enrolledAccount, lessonAttendanceDate, AttendanceStatus.findByName(attendanceStatus));
             enrolledLessonAttendance.update(updating);

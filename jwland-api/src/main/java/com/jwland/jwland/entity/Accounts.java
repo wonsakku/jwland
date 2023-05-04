@@ -9,7 +9,7 @@ public class Accounts {
         this.accounts = accounts;
     }
 
-    public Account findByAccountId(Account comparing){
+    public Account findSameAccount(Account comparing){
         return this.accounts.stream()
                 .filter(account -> account.equals(comparing))
                 .findFirst()
