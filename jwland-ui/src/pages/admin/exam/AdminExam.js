@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import ExamModal from "./ExamModal";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "react-bootstrap";
 import { useState } from "react";
 import adminExamMenu from "./env/adminExamMenu";
@@ -7,21 +6,10 @@ import AdminPageCard from "../components/AdminPageCard";
 
 const AdminExam = () => {
 
-    const [modalShow, setModalShow] = useState(false);
-    const handleShow = () => setModalShow(true);
-    const handleClose = () => setModalShow(false);
-
-
     return (
         <>
             <div className="mt-5 d-flex justify-content-between">
                 <h2>시험 관리</h2>
-                <div>
-                    <Button className="btn btn-primary" onClick={handleShow}>
-                        시험 등록
-                    </Button>
-                    <ExamModal modalShow={modalShow} handleClose={handleClose} />
-                </div>
             </div>
             <div className="album py-5 bg-body-tertiary">
                 <div className="container">

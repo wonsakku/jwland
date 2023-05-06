@@ -3,15 +3,14 @@ import AdminPageCard from "./components/AdminPageCard";
 
 const Admin = () => {
 
-    console.log(adminMenu);
     return (
         <>
-            <h2 className="py-5">ADMIN PAGE</h2>
+            <div className="d-flex justify-content-between mt-5">
+                <h2 className="">ADMIN PAGE</h2>
+            </div>
             <div className="album py-5 bg-body-tertiary">
                 <div className="container">
                     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-
                         {adminMenu.map(menu => {
                             return (
                                 <AdminPageCard path={menu.path} title={menu.title} key={menu.path}>

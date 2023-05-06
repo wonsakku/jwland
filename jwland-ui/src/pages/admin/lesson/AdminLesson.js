@@ -26,10 +26,10 @@ const AdminLesson = () => {
 
     return (
         <>
-            <div className="d-flex justify-content-between py-5 mb-5">
+            <div className="d-flex justify-content-between mt-5">
                 <h2 className="">수업 관리 페이지</h2>
                 <div>
-                    <Link className="btn btn-primary me-2" to="/admin/lessons/enroll">수업 등록</Link>
+                    <Link className="btn btn-primary me-4" to="/admin/lessons/enroll">수업 등록</Link>
                 </div>
             </div>
             <div className="album py-5 bg-body-tertiary">
