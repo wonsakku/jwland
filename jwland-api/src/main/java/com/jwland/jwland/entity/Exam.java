@@ -26,4 +26,19 @@ public class Exam extends BaseEntity {
     @JoinColumn(nullable = false, name = "organization_id")
     private ExamOrganization organization;
 
+    private Exam(Integer year, Integer month, ExamOrganization organization) {
+        this.year = year;
+        this.month = month;
+        this.organization = organization;
+    }
+
+    public static Exam toInsertEntity(Integer year, Integer month, ExamOrganization examOrganization) {
+        return new Exam(year, month, examOrganization);
+    }
+
+    public void update(Exam updating) {
+        this.year = updating.year;
+        this.month = updating.month;
+        this.organization = updating.organization;
+    }
 }
