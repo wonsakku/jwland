@@ -6,6 +6,7 @@ import com.jwland.jwland.entity.ExamOrganization;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,5 +34,12 @@ public class AdminExamOrganizationService {
         return examOrganizations.stream()
                 .map(ExamOrganizationDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateExamOrganization(ExamOrganizationDto examOrganizationDto) {
+        final ExamOrganization enrolled = examOrganizationRepository.findById(examOrganizationDto.getOrganizationId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 organization 입니다."));
+        enrolled.update(examOrganizationDto.toUpdateEntity());
     }
 }

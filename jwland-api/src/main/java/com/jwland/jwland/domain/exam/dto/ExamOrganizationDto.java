@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class ExamOrganizationDto {
 
-    private Long id;
+    private Long organizationId;
 
     @NotNull
     private String organizationType;
@@ -28,8 +28,12 @@ public class ExamOrganizationDto {
         return ExamOrganization.insertEntity(ExamOrganizationType.findByName(organizationType), name, seq);
     }
 
+    public ExamOrganization toUpdateEntity(){
+        return ExamOrganization.updateEntity(organizationId, ExamOrganizationType.findByName(organizationType), name, seq);
+    }
+
     public ExamOrganizationDto(ExamOrganization examOrganization){
-        this.id = examOrganization.getId();
+        this.organizationId = examOrganization.getId();
         this.organizationType = examOrganization.getExamOrganizationType().name();
         this.name = examOrganization.getName();
         this.seq = examOrganization.getSeq();

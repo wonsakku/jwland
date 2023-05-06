@@ -39,4 +39,13 @@ public class AdminExamOrganizationController {
     }
 
 
+    @PutMapping("/organizations")
+    public ResponseEntity<DefaultResponseDto> updateExamOrganization(@RequestBody @Validated ExamOrganizationDto examOrganizationDto,
+                                                                     Errors errors){
+        ErrorUtil.validate(errors);
+        adminExamOrganizationService.updateExamOrganization(examOrganizationDto);
+
+        return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK) );
+    }
+
 }

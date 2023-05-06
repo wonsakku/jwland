@@ -33,8 +33,28 @@ public class ExamOrganization extends BaseEntity {
         this.seq = seq;
     }
 
+    public ExamOrganization(Long id, ExamOrganizationType examOrganizationType, String name, Integer seq) {
+        this.id = id;
+        this.examOrganizationType = examOrganizationType;
+        this.name = name;
+        this.seq = seq;
+    }
+
     public static ExamOrganization insertEntity(ExamOrganizationType examOrganizationType, String name, Integer seq){
         return new ExamOrganization(examOrganizationType, name, seq);
+    }
+
+    public static ExamOrganization updateEntity(Long id, ExamOrganizationType examOrganizationType, String name, Integer seq) {
+        if(id == null){
+            throw new IllegalArgumentException("id는 필수값입니다.");
+        }
+        return new ExamOrganization(id, examOrganizationType, name, seq);
+    }
+
+    public void update(ExamOrganization updating) {
+        this.examOrganizationType = updating.getExamOrganizationType();
+        this.name = updating.getName();
+        this.seq = updating.getSeq();
     }
 }
 
