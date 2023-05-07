@@ -25,7 +25,7 @@ const AdminExamOrganization = () => {
             const lines = res.data.data.map(organization => {
                 return <TableLine key={organization.organizationId} organization={organization}>
                     <button className="btn btn-warning me-1" onClick={update}>수정</button>
-                    <button className="btn btn-danger me-1">삭제</button>
+                    <button className="btn btn-danger me-1" onClick={remove}>삭제</button>
                 </TableLine>
             });
 
@@ -175,6 +175,26 @@ const AdminExamOrganization = () => {
             alert(err.response.data.data);
         });
 
+    }
+
+    const remove = (e) => {
+
+        if (!window.confirm("삭제하시겠습니까?")) {
+            return;
+        }
+
+        const tr = e.target.closest("tr");
+        const organizationId = tr.querySelector(".organizationId").value;
+
+        axios.delete(`/admin/exams/organizations/${organizationId}`, {
+            headers: jwt.authHeader()
+        }).then(res => {
+            alert("삭제되었습니다.");
+            getOrganizations();
+        }).catch(err => {
+            console.log(err);
+            alert(err.response.data.data);
+        });
     }
 
 

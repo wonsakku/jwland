@@ -4,6 +4,7 @@ import * as jwt from "../../../jwt";
 import axios from "axios";
 import { useEffect } from "react";
 import AdminPageExamCard from "../components/AdminPageExamCard";
+import { Link } from "react-router-dom";
 
 const AdminExamProblem = () => {
 
@@ -155,7 +156,8 @@ const AdminExamProblem = () => {
                                         getExamDetail(exam.examId);
                                     }}
                                 >
-                                    <button className="btn btn-sm btn-outline-primary">시험과목 등록</button>
+                                    <Link className="btn btn-sm btn-outline-primary"
+                                        to={`/admin/exams/${exam.examId}/subjects?year=${exam.year}&month=${exam.month}&organizationName=${exam.organizationName}`}>시험과목 등록</Link>
                                 </AdminPageExamCard>
                             </div>
                         )
