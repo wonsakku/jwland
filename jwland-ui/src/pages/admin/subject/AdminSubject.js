@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import serverUrl from "../../../serverUrl";
-import AdminSubjectCard from "../components/AdminSubjectCard";
 
 
 const AdminSubject = () => {
@@ -14,12 +13,31 @@ const AdminSubject = () => {
                 const data = res.data;
                 const subjects = data.data;
 
+                console.log(subjects);
+
                 const doms = subjects.map(subject => {
                     return (
-                        <AdminSubjectCard subject={subject} key={subject.id}>
-                            <button className="btn btn-warning me-1" value={subject.id} onClick={updateSubject}>수정</button>
-                            <button className="btn btn-danger" value={subject.id} onClick={deleteSubject}>삭제</button>
-                        </AdminSubjectCard>
+                        <tr className="align-middle" key={subject.id}>
+                            <td>
+                                <input type="hidden" value={subject.id} />
+                            </td>
+                            <td>
+                                <input type="text" defaultValue={subject.name} className="form-control subject-name" />
+                            </td>
+                            <td>
+                                <select
+                                    className="form-select use-yn"
+                                    defaultValue={subject.useYn}>
+                                    <option value="Y">Y</option>
+                                    <option value="N">N</option>
+                                </select>
+                            </td>
+                            <td><button className="btn btn-outline-success">등록 페이지</button></td>
+                            <td>
+                                <button className="btn btn-warning me-1" onClick={updateSubject} value={subject.id}>수정</button>
+                                <button className="btn btn-danger" onClick={deleteSubject} value={subject.id}>삭제</button>
+                            </td>
+                        </tr>
                     );
                 });
                 setSubjectsDOM(doms);
@@ -45,9 +63,25 @@ const AdminSubject = () => {
             name: ""
         }
         const line = (
-            <AdminSubjectCard key="new" subject={subject}>
-                <button className="btn btn-success me-1" onClick={enrollSubject}>등록</button>
-            </AdminSubjectCard>
+
+            <tr className="align-middle" key={subject.id} id={subject.id}>
+                <td>
+                    <input type="hidden" value={subject.id} />
+                </td>
+                <td>
+                    <input type="text" defaultValue={subject.name} className="form-control subject-name" />
+                </td>
+                <td>
+                    <select className="form-select use-yn">
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                    </select>
+                </td>
+                <td></td>
+                <td>
+                    <button className="btn btn-primary" onClick={enrollSubject}>등록</button>
+                </td>
+            </tr>
         );
 
         setSubjectsDOM([...subjectsDOM, line]);
@@ -56,9 +90,9 @@ const AdminSubject = () => {
 
     const enrollSubject = (e) => {
 
-        const subjectContainer = e.target.closest(".subject-container");
-        const subjectName = subjectContainer.querySelector(".subject-name").value;
-        const useYn = subjectContainer.querySelector(".use-yn").value;
+        const tr = e.target.closest("tr");
+        const subjectName = tr.querySelector(".subject-name").value;
+        const useYn = tr.querySelector(".use-yn").value;
 
 
         if (subjectName.trim() === "") {
@@ -70,7 +104,7 @@ const AdminSubject = () => {
             return;
         }
 
-        axios.post(serverUrl + "/subjects", {
+        axios.post("/subjects", {
             name: subjectName.trim(),
             useYn: useYn
         }).then(res => {
@@ -82,9 +116,9 @@ const AdminSubject = () => {
     const updateSubject = (e) => {
 
         const subjectId = e.target.value;
-        const subjectContainer = e.target.closest(".subject-container");
-        const subjectName = subjectContainer.querySelector(".subject-name").value;
-        const useYn = subjectContainer.querySelector(".use-yn").value;
+        const tr = e.target.closest("tr");
+        const subjectName = tr.querySelector(".subject-name").value;
+        const useYn = tr.querySelector(".use-yn").value;
 
         if (subjectName.trim() === "") {
             alert("subject 명을 입력하세요");
@@ -95,7 +129,7 @@ const AdminSubject = () => {
             return;
         }
 
-        axios.put(serverUrl + "/subjects", {
+        axios.put("/subjects", {
             id: subjectId,
             name: subjectName.trim(),
             useYn: useYn
@@ -130,7 +164,20 @@ const AdminSubject = () => {
                 </div>
             </div>
             <div id="subject-root">
-                {subjectsDOM}
+                <table className="table mt-5 text-center">
+                    <thead>
+                        <tr className="table-primary">
+                            <th></th>
+                            <th scope="col">과목명</th>
+                            <th scope="col">사용유무</th>
+                            <th scope="col">문제유형 등록페이지</th>
+                            <th scope="col">버튼</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {subjectsDOM}
+                    </tbody>
+                </table>
             </div>
         </>
     );
