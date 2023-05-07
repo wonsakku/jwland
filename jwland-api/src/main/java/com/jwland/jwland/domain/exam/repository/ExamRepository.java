@@ -12,4 +12,6 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
     Optional<Exam> findByYearAndMonthAndOrganization(Integer year, Integer month, ExamOrganization examOrganization);
 
     Page<Exam> findExamsByOrderByYearDescMonthDesc(Pageable pageable);
+
+    Optional<Exam> findFirstExamsByOrganization(ExamOrganization organization);
 }

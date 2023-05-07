@@ -1,17 +1,22 @@
 package com.jwland.jwland.domain.exam.service;
 
-import com.jwland.jwland.domain.exam.dto.ExamDto;
-import com.jwland.jwland.domain.exam.dto.ExamsDto;
-import com.jwland.jwland.domain.exam.repository.ExamOrganizationRepository;
+import com.jwland.jwland.domain.exam.dto.*;
 import com.jwland.jwland.domain.exam.repository.ExamRepository;
+import com.jwland.jwland.domain.exam.repository.ExamSubjectRepository;
+import com.jwland.jwland.domain.subject.repository.SubjectRepository;
 import com.jwland.jwland.entity.Exam;
 import com.jwland.jwland.entity.ExamOrganization;
+import com.jwland.jwland.entity.ExamSubject;
+import com.jwland.jwland.entity.Subject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -22,6 +27,8 @@ public class AdminExamService {
     private final ExamCommonService examCommonService;
     private final ExamOrganizationCommonService examOrganizationCommonService;
     private final ExamRepository examRepository;
+    private final SubjectRepository subjectRepository;
+    private final ExamSubjectRepository examSubjectRepository;
 
     @Transactional
     public Long enrollExam(ExamDto examDto) {
@@ -61,4 +68,55 @@ public class AdminExamService {
         examRepository.delete(exam);
     }
 
+    public List<EnrolledExamSubjectDto> getEnrolledExamSubjects(Long examId) {
+        final List<ExamSubject> subjects = examSubjectRepository.findExamSubjectsByExamId(examId);
+        return subjects.stream()
+                .map(EnrolledExamSubjectDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<UnenrolledExamSubjectDto> getUnEnrolledExamSubjects(Long examId) {
+        final List<Subject> subjects = subjectRepository.findSubjectsUnenrolledInExam(examId);
+        return subjects.stream()
+                .map(UnenrolledExamSubjectDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Long enrollExamSubject(ExamSubjectDto examSubjectDto) {
+        final Exam exam = examCommonService.findExamById(examSubjectDto.getExamId());
+        final Subject subject = subjectRepository.findById(examSubjectDto.getSubjectId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 과목입니다."));
+
+        examSubjectRepository.findByExamAndSubject(exam, subject)
+                .ifPresent(examSubject -> {throw new IllegalArgumentException("이미 등록된 시험 과목입니다.");});
+
+        final ExamSubject saved = examSubjectRepository.save(examSubjectDto.toInsertEntity(exam, subject));
+
+        return saved.getId();
+    }
+
+    @Transactional
+    public Long updateExamSubject(ExamSubjectDto examSubjectDto) {
+
+        final ExamSubject enrolled = examSubjectRepository.findById(examSubjectDto.getExamSubjectId())
+                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 시험 과목입니다."));
+
+        final ExamSubject updating = examSubjectDto.toUpdateEntity();
+        enrolled.update(updating);
+
+        return enrolled.getId();
+    }
+
+    @Transactional
+    public void deleteExamSubject(Long examSubjectId) {
+        final ExamSubject enrolled = examSubjectRepository.findById(examSubjectId)
+                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 시험 과목입니다."));
+
+        examSubjectRepository.delete(enrolled);
+    }
 }
+
+
+
+

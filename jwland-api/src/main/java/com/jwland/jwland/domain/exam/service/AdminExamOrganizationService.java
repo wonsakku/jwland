@@ -2,6 +2,7 @@ package com.jwland.jwland.domain.exam.service;
 
 import com.jwland.jwland.domain.exam.dto.ExamOrganizationDto;
 import com.jwland.jwland.domain.exam.repository.ExamOrganizationRepository;
+import com.jwland.jwland.domain.exam.repository.ExamRepository;
 import com.jwland.jwland.entity.ExamOrganization;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 public class AdminExamOrganizationService {
 
     private final ExamOrganizationRepository examOrganizationRepository;
+    private final ExamRepository examRepository;
+    private final ExamOrganizationCommonService examOrganizationCommonService;
 
 
     public Long enrollExamOrganization(ExamOrganizationDto examOrganizationDto) {
@@ -38,8 +41,19 @@ public class AdminExamOrganizationService {
 
     @Transactional
     public void updateExamOrganization(ExamOrganizationDto examOrganizationDto) {
-        final ExamOrganization enrolled = examOrganizationRepository.findById(examOrganizationDto.getOrganizationId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 organization 입니다."));
+        final ExamOrganization enrolled =examOrganizationCommonService.findExamOrganizationById(examOrganizationDto.getOrganizationId());
         enrolled.update(examOrganizationDto.toUpdateEntity());
+    }
+
+    @Transactional
+    public void deleteExamOrganization(Long organizationId) {
+
+        final ExamOrganization organization = examOrganizationCommonService.findExamOrganizationById(organizationId);
+
+        examRepository.findFirstExamsByOrganization(organization)
+                .ifPresent(exam -> {throw new IllegalArgumentException("시험 기관에 등록된 시험이 존재합니다.\n" +
+                        "시험을 먼저 삭제한 후 시험 기관을 삭제해주세요");});
+
+        examOrganizationRepository.delete(organization);
     }
 }

@@ -48,4 +48,10 @@ public class AdminExamOrganizationController {
         return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK) );
     }
 
+    @DeleteMapping("/organizations/{organizationId}")
+    public ResponseEntity<DefaultResponseDto> deleteExamOrganization(@PathVariable Long organizationId){
+        adminExamOrganizationService.deleteExamOrganization(organizationId);
+        return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK) );
+    }
+
 }
