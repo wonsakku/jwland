@@ -125,7 +125,6 @@ const AdminStudent = () => {
                 <tbody>
                     {accounts.map(account => {
                         return (
-
                             <tr key={account.id}>
                                 <td><input type="checkbox" value={account.id} onChange={toggleAccountId} id={`accountId_${account.id}`} /></td>
                                 <td>{account.name}</td>

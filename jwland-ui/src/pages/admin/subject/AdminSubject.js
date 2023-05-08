@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import serverUrl from "../../../serverUrl";
+import { Link } from "react-router-dom";
 
 
 const AdminSubject = () => {
@@ -32,7 +33,13 @@ const AdminSubject = () => {
                                     <option value="N">N</option>
                                 </select>
                             </td>
-                            <td><button className="btn btn-outline-success">등록 페이지</button></td>
+                            <td>
+                                <Link
+                                    className="btn btn-outline-success"
+                                    to={`/admin/subjects/${subject.id}/problem-types/large?subjectName=${subject.name}`}
+                                >등록 페이지
+                                </Link>
+                            </td>
                             <td>
                                 <button className="btn btn-warning me-1" onClick={updateSubject} value={subject.id}>수정</button>
                                 <button className="btn btn-danger" onClick={deleteSubject} value={subject.id}>삭제</button>
