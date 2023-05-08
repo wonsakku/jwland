@@ -2,10 +2,23 @@ import { Link, NavLink } from "react-router-dom";
 import * as jwt from "../jwt";
 import { useState, useEffect } from "react";
 
-const Header = ({ logined, isAdmin }) => {
+const Header = () => {
+
+    const [logined, setLogined] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        isLoginned();
+    }, [logined]);
 
     const logout = () => {
         jwt.logout();
+        setLogined(false);
+    }
+
+    const isLoginned = () => {
+        setLogined(jwt.isLogined());
+        setIsAdmin(jwt.isAdmin());
     }
 
     return (

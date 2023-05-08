@@ -1,15 +1,23 @@
 import "./login.css";
 import bootstrapLogo from "./bootstrap-logo.svg";
 import axios from "axios";
-import serverUrl from "../../serverUrl";
-import { useState } from "react";
-import settings from "../../settings";
+import { useState, useEffect } from "react";
 import * as jwt from "../../jwt";
 import { useHistory } from "react-router-dom";
 
 const Login = () => {
-    const [token, setToken] = useState(null);
-    const history = useHistory();
+
+    useEffect(() => {
+        isLogined();
+    }, []);
+
+    const isLogined = () => {
+        if (jwt.isLogined()) {
+            alert("현재 로그인 중입니다.");
+            window.location.href = "/";
+        }
+    }
+
 
     const login = () => {
 
@@ -32,7 +40,7 @@ const Login = () => {
         }).then(res => {
             const success = jwt.login(res.headers);
             if (success) {
-                history.push("/");
+                window.location.href = "/";
             }
         });
     }

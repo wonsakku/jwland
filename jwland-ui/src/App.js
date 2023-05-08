@@ -10,23 +10,10 @@ import * as jwt from "./jwt";
 
 function App() {
 
-  const [logined, setLogined] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    isLoginned();
-  }, [logined]);
-
-  const isLoginned = () => {
-    setLogined(jwt.isLogined());
-    setIsAdmin(jwt.isAdmin());
-  }
-
-
 
   return (
     <Router>
-      <Header isAdmin={isAdmin} logined={logined} />
+      <Header />
 
       <div className="container mt-3">
         <Switch>
