@@ -14,6 +14,7 @@ const Header = () => {
     const logout = () => {
         jwt.logout();
         setLogined(false);
+        window.location.href = "/";
     }
 
     const isLoginned = () => {
