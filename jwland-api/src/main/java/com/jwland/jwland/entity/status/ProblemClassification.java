@@ -3,6 +3,8 @@ package com.jwland.jwland.entity.status;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.stream.Stream;
+
 @RequiredArgsConstructor
 @Getter
 public enum ProblemClassification {
@@ -12,4 +14,16 @@ public enum ProblemClassification {
     private final String type;
     private final Integer level;
 
+    public static ProblemClassification findByName(String name){
+        return Stream.of(values())
+                .filter(value -> value.name().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ProblemClassification 입니다. - " + name));
+    }
+
+    public boolean topLevel() {
+        return this.level == 1;
+    }
 }
+
+

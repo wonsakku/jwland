@@ -1,6 +1,7 @@
 package com.jwland.jwland.domain.subject.controller;
 
 import com.jwland.jwland.domain.subject.dto.SubjectDto;
+import com.jwland.jwland.domain.subject.dto.SubjectProblemTypeDto;
 import com.jwland.jwland.domain.subject.dto.SubjectsDto;
 import com.jwland.jwland.domain.subject.service.SubjectService;
 import com.jwland.jwland.dto.DefaultResponseDto;
@@ -13,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -59,6 +61,14 @@ public class SubjectController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+//    @GetMapping("/problem-types")
+//    public ResponseEntity<DefaultResponseDto> enrollProblemTypes(@RequestBody @Validated SubjectProblemTypeDto subjectProblemTypeDto,
+//                                                                 Errors errors){
+//        ErrorUtil.validate(errors);
+//        subjectService
+//
+//    }
 
 
 

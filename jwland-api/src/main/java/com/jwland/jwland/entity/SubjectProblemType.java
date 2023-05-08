@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,7 +32,54 @@ public class SubjectProblemType extends BaseEntity{
     @Column(nullable = false, name = "classification_name")
     private String name;
 
-    private String description;
+    private Integer orderSequence;
+
+    @Column(nullable = false, name = "use_yn")
+    private String useYn;
+
+    private SubjectProblemType(Subject subject, SubjectProblemType parent, ProblemClassification problemClassification, String problemTypeName, Integer orderSequence, String useYn) {
+
+        validateAbleNotToHaveParent(parent, problemClassification);
+
+        this.subject = subject;
+        this.parent = parent;
+        this.name = problemTypeName;
+        this.orderSequence = orderSequence;
+        this.useYn = useYn;
+        this.problemClassification = problemClassification;
+    }
+
+    private SubjectProblemType(String problemTypeName, Integer orderSequence, String useYn) {
+        this.name = problemTypeName;
+        this.orderSequence = orderSequence;
+        this.useYn = useYn;
+    }
+
+    public static SubjectProblemType toUpdateEntity(String problemTypeName, Integer orderSequence, String useYn) {
+        return new SubjectProblemType(problemTypeName, orderSequence, useYn);
+    }
+
+    private void validateAbleNotToHaveParent(SubjectProblemType parent, ProblemClassification problemClassification){
+
+        if(problemClassification.topLevel()){
+            return ;
+        }
+
+        if(parent == null){
+            throw new IllegalArgumentException("상위 분류값(parent)가 필요합니다.");
+        }
+    }
+
+
+    public static SubjectProblemType toInsertEntity(Subject subject, SubjectProblemType parent, ProblemClassification problemClassification, String problemTypeName, Integer orderSequence, String useYn) {
+        return new SubjectProblemType(subject, parent, problemClassification, problemTypeName, orderSequence, useYn);
+    }
+
+    public void update(SubjectProblemType updating) {
+        this.name = updating.getName();
+        this.useYn = updating.getUseYn();
+        this.orderSequence = updating.getOrderSequence();
+    }
 
 }
 
