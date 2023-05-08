@@ -27,7 +27,7 @@ const AdminSubjectProblemLargeType = () => {
 
     const addLine = () => {
 
-        const problemTypeIds = document.querySelectorAll(".problemTypeId");
+        const problemTypeIds = document.querySelectorAll(".subjectProblemTypeId");
 
         for (let i = 0; i < problemTypeIds.length; i++) {
             if (problemTypeIds[i].value === "new") {
@@ -36,15 +36,17 @@ const AdminSubjectProblemLargeType = () => {
             }
         }
 
-        const newProblemType = { problemTypeId: "new" };
-        const newLine = <AdminProblemTypeTableLine key={newProblemType.problemTypeId} problemType={newProblemType}>
+        const newProblemType = { subjectProblemTypeId: "new" };
+        const newLine = <AdminProblemTypeTableLine key={newProblemType.subjectProblemTypeId} problemType={newProblemType}>
             <button className="btn btn-primary" onClick={enroll}>등록</button>
         </AdminProblemTypeTableLine>
         setProblemTypesDOM([...problemTypesDOM, newLine]);
     }
 
     const getProblemTypes = () => {
-        axios.get(`/admin/subjects/problem-types?subjectId=${subjectId}&problemClassification=${problemClassification}`, {
+        const url = `/admin/subjects/problem-types?subjectId=${subjectId}&problemClassification=${problemClassification}`;
+        console.log(url);
+        axios.get(url, {
             headers: jwt.authHeader()
         }).then(res => {
             const responseData = res.data.data;
@@ -131,12 +133,8 @@ const AdminSubjectProblemLargeType = () => {
             return;
         }
 
-        window.location.href = `/admin/subjects/${subjectId}/problem-types/large/${parentId}?subjectName=${subjectName}&parentName=${parentName}`;
+        window.location.href = `/admin/subjects/${subjectId}/problem-types/${parentId}?subjectName=${subjectName}&parentName=${parentName}&parentProblemClassification=${problemClassification}`;
     }
-
-
-
-
 
     return (
         <div className="container">
