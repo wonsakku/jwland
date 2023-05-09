@@ -7,19 +7,20 @@ import * as jwt from "../../../jwt";
 import axios from "axios";
 import { useEffect } from "react";
 
-const AdminSubjectProblemLargeType = () => {
+const AdminSubjectProblemMiddleType = () => {
 
-    const { subjectId } = useParams();
+    const { subjectId, parentId } = useParams();
     const { search } = useLocation();
     const queryStrings = queryString.parse(search);
     const subjectName = queryStrings.subjectName;
-    const problemClassification = "LARGE";
+    const receivedParentName = queryStrings.parentName;
+    const problemClassification = "MIDDLE";
     const history = useHistory();
 
 
     const [problemTypesDOM, setProblemTypesDOM] = useState([]);
-    const [parentId, setParentId] = useState(null);
-    const [parentName, setParentName] = useState(null);
+    const [selectedId, setSelectedId] = useState(null);
+    const [parentName, setParentName] = useState(queryStrings.parentName);
 
     useEffect(() => {
         getProblemTypes();
@@ -45,7 +46,7 @@ const AdminSubjectProblemLargeType = () => {
     }
 
     const getProblemTypes = () => {
-        const url = `/admin/subjects/problem-types?subjectId=${subjectId}&problemClassification=${problemClassification}`;
+        const url = `/admin/subjects/problem-types?subjectId=${subjectId}&problemClassification=${problemClassification}&parentId=${parentId}`;
         console.log(url);
         axios.get(url, {
             headers: jwt.authHeader()
@@ -115,6 +116,7 @@ const AdminSubjectProblemLargeType = () => {
 
         return {
             subjectId,
+            parentId,
             problemTypeName,
             orderSequence,
             useYn,
@@ -123,27 +125,27 @@ const AdminSubjectProblemLargeType = () => {
     }
 
     const changeParentInfo = (e) => {
-        setParentId(e.target.value);
+        setSelectedId(e.target.value);
         const tr = e.target.closest("tr");
-        setParentName(tr.querySelector(".problemTypeName").value);
+        setParentName(receivedParentName + " - " + tr.querySelector(".problemTypeName").value);
     }
 
     const goToChildrenClassification = (e) => {
-        if (parentId === null) {
+        if (selectedId === null) {
             alert("분류 항목을 선택해주세요");
             return;
         }
 
-        history.push(`/admin/subjects/${subjectId}/problem-types/large/${parentId}?subjectName=${subjectName}&parentName=${parentName}`);
+        history.push(`/admin/subjects/${subjectId}/problem-types/middle/${selectedId}?subjectName=${subjectName}&parentName=${parentName}`);
     }
 
     return (
         <div className="container">
             <div className="mt-5 d-flex justify-content-between">
-                <h2>{subjectName}</h2>
+                <h2>{subjectName} - {parentName}</h2>
                 <div className="my-auto">
                     <button className="btn btn-primary me-2" onClick={addLine}>라인 추가</button>
-                    <button className="btn btn-success" onClick={goToChildrenClassification}>중분류 등록</button>
+                    <button className="btn btn-success" onClick={goToChildrenClassification}>소분류 등록</button>
                 </div>
             </div>
             <AdminProblemTypeTable >
@@ -154,4 +156,4 @@ const AdminSubjectProblemLargeType = () => {
 }
 
 
-export default AdminSubjectProblemLargeType;
+export default AdminSubjectProblemMiddleType;
