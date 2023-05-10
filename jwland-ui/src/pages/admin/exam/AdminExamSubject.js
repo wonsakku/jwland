@@ -1,7 +1,7 @@
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "react-bootstrap";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import * as jwt from "../../../jwt";
 import AdminPageExamCard from "../components/AdminPageExamCard";
@@ -164,7 +164,9 @@ const AdminExamSubject = () => {
 
                         {enrolledSubjects.map(subject => {
                             return <AdminPageExamCard key={subject.examSubjectId} title={subject.subjectName} onClick={() => updatePopup(subject.examSubjectId)}>
-                                <button className="btn btn-sm btn-outline-primary">문제 등록</button>
+                                <Link className="btn btn-sm btn-outline-primary"
+                                    to={`/admin/exams/${examId}/subjects/${subject.examSubjectId}/problems?year=${year}&month=${month}&organizationName=${organizationName}&subjectName=${subject.subjectName}`}
+                                >문제 등록</Link>
                                 <button className="btn btn-sm btn-outline-success">해설 등록</button>
                                 <button className="btn btn-sm btn-outline-danger">등급컷 등록</button>
                             </AdminPageExamCard>
