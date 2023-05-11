@@ -17,8 +17,8 @@ public class ExamAccountWrongAnswer extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "account_id")
-    private Account account;
+    @JoinColumn(nullable = false, name = "account_exam_subject_id")
+    private AccountExamSubject accountExamSubject;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exam_problem_id")

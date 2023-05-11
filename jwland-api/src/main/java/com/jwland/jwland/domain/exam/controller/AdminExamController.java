@@ -5,7 +5,6 @@ import com.jwland.jwland.domain.exam.service.AdminExamService;
 import com.jwland.jwland.dto.DefaultResponseDto;
 import com.jwland.jwland.util.ErrorUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -98,6 +97,35 @@ public class AdminExamController {
     }
 
 
+    @GetMapping("/subjects/{examSubjectId}/problem-types")
+    public ResponseEntity<DefaultResponseDto> getSubjectProblemTypes(@PathVariable Long examSubjectId,
+                                                                     @RequestParam(name = "problemClassification") String problemClassification){
+        List<ExamSubjectProblemTypeDto> results = adminExamService.getSubjectProblemTypes(examSubjectId, problemClassification);
+        return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK, results) );
+    }
+
+    @PostMapping("/subjects/{examSubjectId}/problems")
+    public ResponseEntity<DefaultResponseDto> enrollExamProblems(@RequestBody @Validated ExamProblemListDto examProblemListDto,
+                                                                 Errors errors,
+                                                                 @PathVariable Long examSubjectId){
+        ErrorUtil.validate(errors);
+        adminExamService.enrollExamProblems(examProblemListDto, examSubjectId);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new DefaultResponseDto( HttpStatus.OK ) );
+    }
+
+    @GetMapping("/subjects/{examSubjectId}/problems")
+    public ResponseEntity<DefaultResponseDto> getExamProblems(@PathVariable Long examSubjectId){
+        List<ExamProblemDto> results = adminExamService.getExamProblems(examSubjectId);
+        return ResponseEntity.ok( new DefaultResponseDto(HttpStatus.OK, results) );
+    }
 
 
 }
+
+
+
+
+
+
+

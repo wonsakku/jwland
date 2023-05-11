@@ -1,13 +1,13 @@
 package com.jwland.jwland.domain.exam.service;
 
 import com.jwland.jwland.domain.exam.dto.*;
+import com.jwland.jwland.domain.exam.repository.ExamProblemRepository;
 import com.jwland.jwland.domain.exam.repository.ExamRepository;
 import com.jwland.jwland.domain.exam.repository.ExamSubjectRepository;
+import com.jwland.jwland.domain.subject.repository.SubjectProblemTypeRepository;
 import com.jwland.jwland.domain.subject.repository.SubjectRepository;
-import com.jwland.jwland.entity.Exam;
-import com.jwland.jwland.entity.ExamOrganization;
-import com.jwland.jwland.entity.ExamSubject;
-import com.jwland.jwland.entity.Subject;
+import com.jwland.jwland.entity.*;
+import com.jwland.jwland.entity.status.ProblemClassification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,10 +25,14 @@ import java.util.stream.Collectors;
 public class AdminExamService {
 
     private final ExamCommonService examCommonService;
+    private final ExamSubjectCommonService subjectCommonService;
     private final ExamOrganizationCommonService examOrganizationCommonService;
     private final ExamRepository examRepository;
     private final SubjectRepository subjectRepository;
     private final ExamSubjectRepository examSubjectRepository;
+    private final SubjectProblemTypeRepository subjectProblemTypeRepository;
+    private final ExamProblemRepository examProblemRepository;
+
 
     @Transactional
     public Long enrollExam(ExamDto examDto) {
@@ -114,6 +118,48 @@ public class AdminExamService {
                 .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 시험 과목입니다."));
 
         examSubjectRepository.delete(enrolled);
+    }
+
+    public List<ExamSubjectProblemTypeDto> getSubjectProblemTypes(Long examSubjectId, String problemClassification) {
+        final ExamSubject examSubject = examSubjectRepository.findByIdFetchJoinSubject(examSubjectId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 시험 과목입니다."));
+        List<SubjectProblemType> subjectProblemTypes = subjectProblemTypeRepository
+                .findBySubjectAndProblemClassificationOrderByOrderSequenceAsc(examSubject.getSubject(), ProblemClassification.findByName(problemClassification));
+        return subjectProblemTypes.stream()
+                .map(ExamSubjectProblemTypeDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void enrollExamProblems(ExamProblemListDto examProblemListDto, Long examSubjectId) {
+        final ExamSubject examSubject = subjectCommonService.findById(examSubjectId);
+        final List<ExamProblem> enrolledExamProblems = examProblemRepository.findAllById(examProblemListDto.getExamProblemIds());
+        final List<SubjectProblemType> enrolledProblemTypes = subjectProblemTypeRepository.findAllById(examProblemListDto.getSubjectProblemTypeIds());
+        final SubjectProblemTypes enrolledSubjectProblemTypes = new SubjectProblemTypes(enrolledProblemTypes);
+
+        // 기등록 문제 수정
+        for (ExamProblem enrolled : enrolledExamProblems) {
+            final ExamProblemSubDto subDto = examProblemListDto.getSubDtoByExamProblemId(enrolled.getId());
+            final Long subjectProblemTypeId = subDto.getSubjectProblemTypeId();
+            final SubjectProblemType subjectProblemType = enrolledSubjectProblemTypes.findById(subjectProblemTypeId);
+            ExamProblem updating = subDto.toEntity(examSubject, subjectProblemType);
+            enrolled.update(updating);
+        }
+
+        // 미등록 문제 등록
+        final List<ExamProblemSubDto> subDtos = examProblemListDto.getSubDtosNotHavingExamProblemId();
+        for (ExamProblemSubDto subDto : subDtos) {
+            final SubjectProblemType subjectProblem = enrolledSubjectProblemTypes.findById(subDto.getSubjectProblemTypeId());
+            final ExamProblem examProblem = subDto.toEntity(examSubject, subjectProblem);
+            examProblemRepository.save(examProblem);
+        }
+    }
+
+    public List<ExamProblemDto> getExamProblems(Long examSubjectId) {
+        List<ExamProblem> enrolled = examProblemRepository.findSmallClassificationTypesByExamSubjectId(examSubjectId, ProblemClassification.SMALL);
+        return enrolled.stream()
+                .map(ExamProblemDto::new)
+                .collect(Collectors.toList());
     }
 }
 

@@ -18,7 +18,7 @@ public class ExamProblem {
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "exam_subject_id")
-    private ExamSubject subject;
+    private ExamSubject examSubject;
 
     @Column(nullable = false, name = "problem_number")
     private Integer problemNumber;
@@ -30,5 +30,26 @@ public class ExamProblem {
     @JoinColumn(name = "subject_problem_type_id")
     private SubjectProblemType subjectProblemType;
 
-    private String description;
+    @Column(name = "correct_answer_rate")
+    private Integer correctAnswerRate;
+
+    private ExamProblem(ExamSubject examSubject, Integer problemNumber, SubjectProblemType subjectProblemType, Integer score, Integer correctAnswerRate) {
+        this.examSubject = examSubject;
+        this.problemNumber = problemNumber;
+        this.subjectProblemType = subjectProblemType;
+        this.score = score;
+        this.correctAnswerRate = correctAnswerRate;
+    }
+
+    public static ExamProblem toEntity(ExamSubject examSubject, Integer problemNumber, SubjectProblemType subjectProblemType, Integer score, Integer correctAnswerRate){
+        return new ExamProblem(examSubject, problemNumber, subjectProblemType, score, correctAnswerRate);
+    }
+
+    public void update(ExamProblem updating) {
+        this.examSubject = updating.examSubject;
+        this.problemNumber = updating.problemNumber;
+        this.score = updating.score;
+        this.subjectProblemType = updating.subjectProblemType;
+        this.correctAnswerRate =updating.correctAnswerRate;
+    }
 }
