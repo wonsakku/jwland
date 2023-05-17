@@ -1,4 +1,4 @@
-package com.jwland.jwland.domain.school.repository;
+package com.jwland.jwland.domain.account.repository;
 
 import com.jwland.jwland.entity.School;
 import org.springframework.data.jpa.repository.JpaRepository;

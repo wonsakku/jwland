@@ -4,7 +4,7 @@ import com.jwland.jwland.domain.account.dto.AccountDto;
 import com.jwland.jwland.domain.account.dto.AuthenticatedAccount;
 import com.jwland.jwland.domain.account.dto.LoginDto;
 import com.jwland.jwland.domain.account.repository.AccountRepository;
-import com.jwland.jwland.domain.school.repository.SchoolRepository;
+import com.jwland.jwland.domain.account.repository.SchoolRepository;
 import com.jwland.jwland.entity.Account;
 import com.jwland.jwland.entity.School;
 import com.jwland.jwland.jwt.TokenProvider;
