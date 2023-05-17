@@ -40,6 +40,7 @@ class AccountServiceDoubleTest {
 
         // then
         Assertions.assertThat(loginId).isEqualTo(inserted.getLoginId());
+        Assertions.assertThat(join).isEqualTo(inserted.getId());
     }
 
     @Test
@@ -48,7 +49,7 @@ class AccountServiceDoubleTest {
 
         // given
         final String loginId = "duplicatedLoginId";
-        accountRepository.save(new Account(loginId));
+        accountRepository.save(new Account(loginId, ""));
         final AccountDto accountDto = new AccountDto("name", loginId, "password", null, Grade.ONE.name());
 
         // when, then

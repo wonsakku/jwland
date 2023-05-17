@@ -65,8 +65,9 @@ public class Account extends BaseEntity {
         this.id = id;
     }
 
-    public Account(String loginId){
+    public Account(String loginId, String encodedPassword){
         this.loginId = loginId;
+        this.password = encodedPassword;
     }
 
     public static Account insertEntity(String loginId, String name, String password, String gradeNumber, AccountStatus accountStatus, School school){

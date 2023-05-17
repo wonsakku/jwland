@@ -28,9 +28,16 @@ public class School extends BaseEntity{
     private String openYn;
 
     public School(SchoolClassification classification, String name, String openYn) {
+        this(null, classification, name, openYn);
+    }
+
+    public School(Long id, SchoolClassification classification, String name, String openYn) {
+        this.id = id;
         this.classification = classification;
         this.name = name;
         this.openYn = openYn;
     }
+
+
 }
 
