@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:postgresql://192.168.238.128/postgres
+    username: postgres
+    password: "0000"
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+#      ddl-auto: create
+      ddl-auto: update
+#      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        #        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100 # in query ??
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+jwt:
+  secret: abcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd
+  token-validity-in-seconds: 10800000
+
+dev-status: test
+
+ui-server: http://localhost:3000
