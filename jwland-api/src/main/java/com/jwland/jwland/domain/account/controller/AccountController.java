@@ -3,6 +3,7 @@ package com.jwland.jwland.domain.account.controller;
 import com.jwland.jwland.domain.account.dto.AccountDto;
 import com.jwland.jwland.domain.account.dto.LoginDto;
 import com.jwland.jwland.domain.account.service.AccountService;
+import com.jwland.jwland.domain.account.service.AccountServiceFacade;
 import com.jwland.jwland.dto.DefaultResponseDto;
 import com.jwland.jwland.jwt.JwtConstants;
 import com.jwland.jwland.util.ErrorUtil;
@@ -23,13 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AccountController {
 
-    private final AccountService accountService;
+    private final AccountServiceFacade accountServiceFacade;
 
     @PostMapping("/join")
     public ResponseEntity<DefaultResponseDto> join(@RequestBody @Validated AccountDto accountDto, Errors errors){
 
         ErrorUtil.validate(errors);
-        accountService.join(accountDto);
+        accountServiceFacade.join(accountDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body( new DefaultResponseDto(HttpStatus.CREATED) );
@@ -38,7 +39,7 @@ public class AccountController {
     @PostMapping("/login")
     public ResponseEntity<DefaultResponseDto> login(@RequestBody LoginDto loginDto){
 
-        String token = accountService.login(loginDto);
+        String token = accountServiceFacade.login(loginDto);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(JwtConstants.AUTHORIZATION, JwtConstants.BEARER + token);

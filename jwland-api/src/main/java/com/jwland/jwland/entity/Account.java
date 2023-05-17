@@ -65,6 +65,10 @@ public class Account extends BaseEntity {
         this.id = id;
     }
 
+    public Account(String loginId){
+        this.loginId = loginId;
+    }
+
     public static Account insertEntity(String loginId, String name, String password, String gradeNumber, AccountStatus accountStatus, School school){
         return new Account(loginId, name, password, Grade.findByNumber(gradeNumber), accountStatus, school);
     }
@@ -83,5 +87,11 @@ public class Account extends BaseEntity {
     public void updateAccountStatus(String accountStatusName) {
         this.accountStatus = AccountStatus.findByName(accountStatusName);
     }
+
+
+    public void setIdForTest(Long id){
+        this.id = id;
+    }
+
 }
 
