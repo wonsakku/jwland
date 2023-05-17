@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.FluentQuery;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MemAccountRepository implements AccountRepository {
@@ -46,6 +47,14 @@ public class MemAccountRepository implements AccountRepository {
     }
 
 
+    @Override
+    public List<Account> findAccountsById(List<Long> accountIds) {
+        return accountIds.stream()
+                .map(accountId -> accounts.get(accountId))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
 
 
     @Override
@@ -58,10 +67,6 @@ public class MemAccountRepository implements AccountRepository {
         return null;
     }
 
-    @Override
-    public List<Account> findAccountsById(List<Long> accountIds) {
-        return null;
-    }
 
     @Override
     public List<Account> findAll() {
