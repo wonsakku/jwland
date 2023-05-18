@@ -81,6 +81,9 @@ public class SubjectProblemType extends BaseEntity{
         this.orderSequence = updating.getOrderSequence();
     }
 
+    public void assignId(Long id) {
+        this.id = id;
+    }
 }
 
 
